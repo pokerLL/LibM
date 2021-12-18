@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>排行榜-书苑</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'libFront/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'libFront/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'libFront/css/site.css' %}" rel="stylesheet">
+    <script src="{% static 'libFront/js/jquery191.min.js' %}"></script>
+    <script src="{% static 'libFront/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'libFront/js/dialog.js' %}" type="text/javascript"></script>
+    <script src="{% static 'libFront/js/book.js' %}" type="text/javascript"></script>
+    <script src="{% static 'libFront/js/pagenormal.js' %}" type="text/javascript"></script>
+    <script src="{% static 'libFront/js/tools.js' %}"></script>
+</head>
+<body>
+
+
+<!-- 此处是header -->
+{% include 'libFront/headerbar.html' %}
+
+<div class="container body-content ">
+    <ul class="nav nav-tabs mb10 hidden-xs panel panel-default" style="background-color: #f5f5f5">
+        <li id="0"><a href="{% url "libfront:ranklist" "score" 1 %}">评分榜</a></li>
+        <li id="1"><a href="{% url "libfront:ranklist" "comment_num" 1 %}">评论榜</a></li>
+        <li id="2"><a href="{% url "libfront:ranklist" "c_time" 1 %}">最新入库</a></li>
+    </ul>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h1 class="fs-16 mg0">排行榜</h1>
+        </div>
+        <table class="table">
+            <tr>
+                <th>书名</th>
+                <th>作者</th>
+                <th>出版社</th>
+                <th>出版日期</th>
+                <th>书籍分类</th>
+                <th>总借出次数</th>
+                <th>总库存</th>
+                <th>当前库存</th>
+                <th>书籍评分</th>
+                <th>书籍评论数</th>
+            </tr>
+
+            {% for book in qs %}
+                <tr>
+                    <td><a href="{% url "libfront:bookdetail" book.id %}">{{ book.name }}</a></td>
+                    <td class="text-muted"><a href="#"><a
+                            href="{% url "libfront:search" book.author 1 %}">{{ book.author }}</a></a></td>
+                    <td><a href="{% url "libfront:search" book.publisher 1 %}">{{ book.publisher }}</a></td>
+                    <td class="hidden-xs">{{ book.pubdate }}</td>
+                    <td class="booktag">
+                        {% for tag in book.categ.all %}
+                            <a href="{% url "libfront:category" tag.id 1 %}">{{ tag }}</a>
+                        {% endfor %}
+                    </td>
+                    <td>{{ book.borrow_num }}</td>
+                    <td>{{ book.stock_all }}</td>
+                    <td>{{ book.stock_now }}</td>
+                    <td>{{ book.score }}</td>
+                    <td>{{ book.comment_num }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% include 'libFront/pgnum.html' %}
+</div>
+<span class="hidden">
+    <script>
+        window.onload = function () {
+            var ur = window.location.pathname;
+            ur = ur.charAt(ur.length - 4);
+            if (ur === "r") {
+                $("#0").addClass("active");
+            } else if (ur === "u") {
+                $("#1").addClass("active");
+                {#$("#1").addClass("active");#}
+            } else {
+                $("#2").addClass("active");
+                {#$("#1").addClass("active");#}
+            }
+        }
+    </script>
+</span>
+{% include "libFront/footerbar.html" %}
+</body>
+</html>

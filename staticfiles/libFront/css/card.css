@@ -1,0 +1,31 @@
+.card-bg-info {
+    background-color: #17a2b8 !important;
+}
+
+.card-bg-success {
+    background-color: #28a745 !important;
+}
+
+.card-bg-warning {
+    background-color: #ffc107 !important;
+}
+
+.card-bg-danger {
+    background-color: #dc3545 !important;
+}
+
+.card-bg-light {
+    background-color: #f8f9fa !important;
+}
+
+.card-bg-dark {
+    background-color: #343a40 !important;
+}
+
+.card-bg-lightblue {
+    background-color: #3c8dbc !important;
+}
+
+.card-bg-navy {
+    background-color: #001f3f !important;
+}

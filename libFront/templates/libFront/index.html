@@ -1,0 +1,351 @@
+{% load  static %}
+{% load  template_functions %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>书苑</title>
+    <link href="{% static 'libFront/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'libFront/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'libFront/css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'libFront/css/site.css' %}" rel="stylesheet">
+    <script src="{% static 'libFront/js/jquery191.min.js' %}"></script>
+    <script src="{% static 'libFront/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'libFront/js/tools.js' %}"></script>
+</head>
+<body>
+
+{% include 'libFront/headerbar.html' %}
+{% if request.session.has_login %}
+    {% if msg.msgnum == 1 and not request.session.change_password_require %}
+        <div id="msg" class="alert alert-warning text-center">
+            {% for it in msg.msg %}{{ it.title }}：{{ it.content }}{% endfor %}
+            (本弹窗五秒后自动消失，请前往用户-站内消息继续查看。)
+        </div>
+        <script>
+            setTimeout("$('#msg').hide()", 5000);
+        </script>
+    {% elif msg.msgnum > 1 %}
+        <div id="msg" class="alert alert-warning text-center">你当前有{{ msg.msgnum }}条通知待查看。(本消息五秒后自动消失，请前往用户-站内消息继续查看。)
+        </div>
+        <script>
+            setTimeout("$('#msg').hide()", 5000);
+        </script>
+    {% endif %}
+{% endif %}
+
+<div class="could-hide container body-content">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default hidden-xs">
+                <div class="panel-heading">
+                    <div class="row">
+                        <h5 class="pull-left col-xs-4"><i class="fa fa-diamond fa-fw"></i>本苑推荐</h5>
+                        <div class="row col-md-6 col-xs-8 pull-right">
+                            <label>Search:</label>
+                            <input type="search">&nbsp;&nbsp;
+                            <button class="btn btn-default lfsbtn shbtn">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="panel-body">
+
+                    {% for i in recommends %}
+                        <div class="col-md-3 col-xs-6 mb10 mt10">
+                            <a class="thumbnail" href="{% url "libfront:bookdetail" i.id %}">
+                                <img src="{% randbookimg i.id %}" style="height:210px;">
+                            </a>
+                            <div class="caption"><strong>{{ i.name }}</strong><br>
+                                <span class="text-muted fs-12">
+                                        <a href="{% url "libfront:search" i.author 1 %}">{{ i.author }}</a> / 著
+                                    </span><br>
+                                <span class="text-warning fs-12">评分：{{ i.score }}/10</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 panel panel-default">
+
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#tab-ns" role="tab" data-toggle="tab">最新入库</a>
+                </li>
+                <li role="presentation"><a href="#tab-sh" role="tab" data-toggle="tab">评分最高</a></li>
+                <li role="presentation"><a href="#tab-cms" role="tab" data-toggle="tab">书评最多</a></li>
+            </ul>
+            <div class="tab-content mt10">
+                <div role="tabpanel" class="tab-pane active" id="tab-ns">
+                    <ul class="list-group list-top">
+
+                        {% for i in newest %}
+                            <li class="list-group-item">
+                                <i class="topNum">{{ forloop.counter }}</i>
+                                <a href="{% url "libfront:bookdetail" i.id %}">{{ i.name }}</a>
+                                <small class="text-muted">/
+                                    <a href="{% url "libfront:search" i.author 1 %}">{{ i.author }}</a>
+                                </small>
+                                <span class="pull-right text-muted">{{ i.c_time }}</span>
+                            </li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="tab-sh">
+                    <ul class="list-group list-top">
+
+                        {% for i in scorehighest %}
+                            <li class="list-group-item">
+                                <i class="topNum">{{ forloop.counter }}</i>
+                                <a href="{% url "libfront:bookdetail" i.id %}">{{ i.name }}</a>
+                                <small class="text-muted">/
+                                    <a href="{% url "libfront:search" i.author 1 %}">{{ i.author }}</a>
+                                </small>
+                                <span class="pull-right text-muted">{{ i.score }}</span>
+                            </li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="tab-cms">
+                    <ul class="list-group list-top">
+
+                        {% for i in commentest %}
+                            <li class="list-group-item">
+                                <i class="topNum">{{ forloop.counter }}</i>
+                                <a href="{% url "libfront:bookdetail" i.id %}">{{ i.name }}</a>
+                                <small class="text-muted">/
+                                    <a href="{% url "libfront:search" i.author 1 %}">{{ i.author }}</a>
+                                </small>
+                                <span class="pull-right text-muted">{{ i.comment_num }}</span>
+                            </li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+{#分区推荐#}
+<div class="could-hide container body-content">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default hidden-xs">
+                <div class="panel-heading">
+                    <div class="row">
+                        <h5 class="pull-left col-xs-4"><i class="fa fa-diamond fa-fw"></i>学霸推荐</h5>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                {#                    <div class="panel-body">#}
+
+                {% for book in list1 %}
+                    {#counter从1 开始计数#}
+                    {% if forloop.counter == 1 or forloop.counter == 3 %}
+                        <div class="panel-body">
+                    {% endif %}
+                <div class="col-md-3 col-xs-6 mb10 mt10">
+                    <a class="thumbnail" href="{% url "libfront:bookdetail" book.id %}">
+                        <img src="{% randbookimg book.id %}"
+                             style="height:120px;">
+
+                        <div class="caption"><strong>{{ book.name }}</strong><br>
+                            <span class="text-muted fs-12">{{ book.author }} / 著</span><br>
+                            <span class="text-warning fs-12">评分/借阅数：{{ book.score }}/10({{ book.borrow_num }})</span>
+                        </div>
+                    </a>
+                </div>
+
+
+                <div class="col-md-3 col-xs-6 mb10 mt10">
+                    <h4>
+                        <a href="{% url "libfront:bookdetail" book.id %}">{{ book.name }}</a>
+                    </h4>
+                    <p class="author">
+                        <img class="img-circle" src="{% randprofileimg book.id %}" width="25" height="25">
+                        <span class="name"><a
+                                href="{% url "libfront:search" book.author 1 %}">{{ book.author }}</a></span><em>|</em>
+                        {% for cat in book.categ.all %}
+                            <a href="{% url "libfront:category" cat.id 1 %}">{{ cat.name }}</a>
+                            {% if not forloop.last %}
+                                <i>·</i>
+                            {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p class="intro">{{ book.description }}</p>
+                    <p class="update"><span>{{ book.pub_time }}</span>
+                    </p>
+                </div>
+
+                {% if forloop.counter == 2 or forloop.counter == 4 %}
+                    </div>
+                {% endif %}
+                {% endfor %}
+
+
+            </div>
+            <div class="panel panel-default hidden-xs">
+                <div class="panel-heading">
+                    <div class="row">
+                        <h5 class="pull-left col-xs-4"><i class="fa fa-diamond fa-fw"></i>女神最爱</h5>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                {#                    <div class="panel-body">#}
+
+                {% for book in list2 %}
+                    {#counter从1 开始计数#}
+                    {% if forloop.counter == 1 or forloop.counter == 3 %}
+                        <div class="panel-body">
+                    {% endif %}
+                <div class="col-md-3 col-xs-6 mb10 mt10">
+                    <a class="thumbnail" href="{% url "libfront:bookdetail" book.id %}">
+                        <img src="{% randbookimg book.id %}"
+                             style="height:120px;">
+
+                        <div class="caption"><strong>{{ book.name }}</strong><br>
+                            <span class="text-muted fs-12">{{ book.author }} / 著</span><br>
+                            <span class="text-warning fs-12">评分/借阅数：{{ book.score }}/10({{ book.borrow_num }})</span>
+                        </div>
+                    </a>
+                </div>
+
+
+                <div class="col-md-3 col-xs-6 mb10 mt10">
+                    <h4>
+                        <a href="{% url "libfront:bookdetail" book.id %}">{{ book.name }}</a>
+                    </h4>
+                    <p class="author">
+                        <img class="img-circle" src="{% randprofileimg book.id %}" width="25" height="25">
+                        <span class="name">
+                            <a href="{% url "libfront:search" book.author 1 %}">{{ book.author }}</a></span><em>|</em>
+                        {% for cat in book.categ.all %}
+                            <a href="{% url  "libfront:category" cat.id 1 %}">{{ cat.name }}</a>
+                            {% if not forloop.last %}
+                                <i>·</i>
+                            {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p class="intro">{{ book.description }}</p>
+                    <p class="update"><span>{{ book.pub_time }}</span>
+                    </p>
+                </div>
+
+                {% if forloop.counter == 2 or forloop.counter == 4 %}
+                    </div>
+                {% endif %}
+                {% endfor %}
+
+
+            </div>
+            <div class="panel panel-default hidden-xs">
+                <div class="panel-heading">
+                    <div class="row">
+                        <h5 class="pull-left col-xs-4"><i class="fa fa-diamond fa-fw"></i>男神喜欢</h5>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                {#                    <div class="panel-body">#}
+
+                {% for book in list3 %}
+                    {#counter从1 开始计数#}
+                    {% if forloop.counter == 1 or forloop.counter == 3 %}
+                        <div class="panel-body">
+                    {% endif %}
+                <div class="col-md-3 col-xs-6 mb10 mt10">
+                    <a class="thumbnail" href="{% url "libfront:bookdetail" book.id %}">
+                        <img src="{% randbookimg book.id %}"
+                             style="height:120px;">
+
+                        <div class="caption"><strong>{{ book.name }}</strong><br>
+                            <span class="text-muted fs-12">{{ book.author }} / 著</span><br>
+                            <span class="text-warning fs-12">评分/借阅数：{{ book.score }}/10({{ book.borrow_num }})</span>
+                        </div>
+                    </a>
+                </div>
+
+
+                <div class="col-md-3 col-xs-6 mb10 mt10">
+                    <h4>
+                        <a href="{% url "libfront:bookdetail" book.id %}">{{ book.name }}</a>
+                    </h4>
+                    <p class="author">
+                        <img class="img-circle" src="{% randprofileimg book.id %}" width="25" height="25">
+                        <span class="name">
+                            <a href="{% url "libfront:search" book.author 1 %}">{{ book.author }}</a>
+                        </span>
+                        <em>|</em>
+                        {% for cat in book.categ.all %}
+                            <a href="{% url "libfront:category" cat.id 1 %}">{{ cat.name }}</a>
+                            {% if not forloop.last %}
+                                <i>·</i>
+                            {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p class="intro">{{ book.description }}</p>
+                    <p class="update"><span>{{ book.pub_time }}</span>
+                    </p>
+                </div>
+
+                {% if forloop.counter == 2 or forloop.counter == 4 %}
+                    </div>
+                {% endif %}
+                {% endfor %}
+
+
+            </div>
+        </div>
+
+        {#评论#}
+
+        <div class="col-md-4 panel panel-default">
+            <div class=" hidden-xs">
+                <div class="panel-heading">
+                    <div class="row">
+                        <h5 class="pull-left col-xs-6"><i class="fa fa-diamond fa-fw"></i>全站热评</h5>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <p class="hidden" id="uid">{{ request.session.user_id }}</p>
+                {% for i in cms %}
+                    <li class="list-group-item">
+                        <p align="right">
+                            <a class="word" href="{% url "libfront:bookdetail" i.book.id %}">
+                                <strong>{{ i.book }}</strong>
+                                <small class="text-muted"> /{{ i.author }}</small>
+                            </a>
+                        </p>
+                        <img class="img-circle" src="{% randprofileimg i.user.id %}" width="30" height="30">
+                        <span>{{ i.user.nickname }}</span>&nbsp;&nbsp;
+                        <span>{{ i.c_time }}</span>
+                        <p class="intro">{{ i.comment }}</p>
+
+                        <p class="hidden cid">{{ i.id }}</p>
+
+                        <p align="right" class="update">
+                            <a class="btn cmtlike">
+                                <i class="fa {% cmtlikebtn i.id userid %} fa-fw"></i>
+                            </a>
+                            <span class="pnum">{{ i.p_num }}</span>
+                        </p>
+                    </li>
+                {% endfor %}
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% include "libFront/footerbar.html" %}
+</body>
+</html>

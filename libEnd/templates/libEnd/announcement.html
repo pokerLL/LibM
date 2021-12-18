@@ -1,0 +1,38 @@
+{% extends "libEnd/template.html" %}
+{% block content %}
+
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">网站公告</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="form-group row">
+                <label class="col-md-2 ">Send TO</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="type">
+                        <option value="1">全部管理员账号</option>
+                        <option value="2" selected="selected">全部普通账号</option>
+                        <option value="3">全部已注册账号</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 ">标题</label>
+                <div class="col-md-10">
+                    <input class="form-control" id="title">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 ">编辑公告</label>
+                <div class="col-md-10">
+                    <textarea class="form-control" name="description" rows="4" id="content"></textarea>
+                </div>
+            </div>
+
+            <div class="card-footer ">
+                <button class="btn btn-primary asbtn">发 送</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

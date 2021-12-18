@@ -1,0 +1,74 @@
+{% extends "libEnd/template.html" %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Horizontal Form</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form class="form-horizontal" id="bb_form">
+                    <input type="hidden" name="id" {% if id != 0 %}value="{{ bb.id }}"{% endif %}>
+                    <input type="hidden" name="object" value="bb">
+                    <input type="hidden" name="type" value="{{ type }}">
+                    <input type="hidden" name="operation" value="update">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">用户
+                                <a {% if id != 0 %}href="{% url "lm:userdetail" bb.user.id %}"{% endif %}>
+                                    <i class="far fa-edit float-right"></i>
+                                </a>
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" disabled
+                                       {% if id != 0 %}value="{{ bb.user }}"{% endif %}>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">书籍
+                                <a {% if id != 0 %}href="{% url "lm:bookdetail" bb.book.id %}"{% endif %}>
+                                    <i class="far fa-edit float-right"></i>
+                                </a>
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" disabled
+                                       {% if id != 0 %}value="{{ bb.book }}"{% endif %}>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">起始时间</label>
+                            <div class="col-sm-10">
+                                <input type="datetime-local" class="form-control" name="c_time"
+                                       {% if id != 0 %}value="{{ bb.c_time | date:"Y-m-d\TH:i" }}"{% endif %}>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">约定还书时间</label>
+                            <div class="col-sm-10">
+                                <input type="datetime-local" class="form-control" name="p_time"
+                                       {% if id != 0 %}value="{{ bb.p_time | date:"Y-m-d\TH:i" }}"{% endif %}>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">最终还书时间</label>
+                            <div class="col-sm-10">
+                                <input type="datetime-local" class="form-control" name="f_time"
+                                       {% if id != 0 %}value="{{ bb.f_time | date:"Y-m-d\TH:i" }}"{% endif %}>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+                <div class="card-footer">
+                    <button class="btn btn-primary float-right cgup">放弃修改</button>
+                    <button class="btn btn-primary float-right bbcph">确认修改</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

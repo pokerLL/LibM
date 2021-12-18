@@ -1,0 +1,4 @@
+django==3.2.9
+faker
+redis==2.10.6
+pymysql==1.0.2

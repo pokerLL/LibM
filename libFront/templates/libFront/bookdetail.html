@@ -1,0 +1,290 @@
+{% load static %}
+{% load template_functions %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>{{ book.name }}-{{ book.author }}-书苑</title>
+    <script src="{% static 'libFront/js/jquery191.min.js' %}"></script>
+    <link href="{% static 'libFront/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'libFront/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'libFront/css/window.css' %}" rel="stylesheet">
+    <link href="{% static 'libFront/css/site.css' %}" rel="stylesheet">
+    <script src="{% static 'libFront/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'libFront/js/dialog.js' %}"></script>
+    <script src="{% static 'libFront/js/window.js' %}"></script>
+    <script src="{% static 'libFront/js/tools.js' %}"></script>
+
+</head>
+<body>
+
+<!-- 此处是header -->
+
+{% include 'libFront/headerbar.html' %}
+
+<div class="container body-content">
+
+    <div class="col-md-8">
+        <!-- 面包屑导航 -->
+        <ol class="breadcrumb">
+            <li><a href="{% url "libfront:index" %}"><i class="fa fa-home fa-fw"></i>首页</a></li>
+            {% if catg %}
+                <li><a href="{% url "libfront:category" catg.id 1 %}">{{ catg.name }}</a></li>{% endif %}
+            <li class="active">{{ book.name }}</li>
+        </ol>
+        <!-- 书籍信息-->
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="col-md-3">
+                            <img src="{% randbookimg book.id %}" style="width: 100%">
+                        </div>
+                        <div class="col-md-9">
+                            <h1 class="bookTitle">{{ book.name }}</h1>
+                            <p class="booktag">
+                                <a class="red" href="{% url "libfront:search" book.author 1 %}"
+                                   target="_blank">{{ book.author }}</a>
+                                {% if catg %}
+                                    <a class="red" href="{% url "libfront:category" catg.id 1 %}">{{ catg }}</a>
+                                {% endif %}
+                                <a class="red" target="_blank">在借：{% intdiff book.stock_all book.stock_now %} </a>
+                                <a class="red" target="_blank">剩余库存：{{ book.stock_now }} </a>
+                            </p>
+                            <p> 作者：<a href="{% url "libfront:search" book.author 1 %}">{{ book.author }}</a></p>
+                            <p> 出版社：<a href="{% url "libfront:search" book.publisher 1 %}">{{ book.publisher }}</a></p>
+                            <p> 出版日期：{{ book.pubdate }}</p>
+                            <p> 图书标签：<a href="#"></a>
+                            <p class="booktag">
+                                {% for it in catgs %}
+                                    <a href="{% url "libfront:category" it.id 1 %}">{{ it.name }}</a>
+                                {% endfor %}
+                            </p>
+                            <p> 图书评分(借阅数)：<a href="{% url "libfront:ranklist" "score" 1 %}">{{ book.score }}/{{ 10 }}
+                                ({{ book.borrow_num }})</a>
+                            </p>
+                            <div class="row">
+                                <p class="hidden" id="uid">{{ request.session.user_id }}</p>
+                                <p class="hidden" id="bid">{{ book.id }}</p>
+                                <span class="col-md-8">
+                                        <button class="btn btn-primary" type="button" id="favbook">
+                                            <i class="fa fa-thumbs-up fa-fw"></i>点赞书籍
+                                        </button>
+										<button class="btn btn-success" type="button" id="borrowbook">
+                                            <i class="fa fa-plus fa-fw"></i>借阅书籍
+                                        </button>
+                                        <button class="btn btn-info" type="button" id="collectbook">
+                                            <i class="fa fa-star fa-fw"></i>收藏书籍
+                                        </button>
+                            </span>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+
+
+                        <hr>
+                    </div>
+                    <div class="clear" style="height: 20px"></div>
+
+                    <p class="text-muted" id="bookIntro" style="">
+                        书籍简介：{{ book.description }}
+                    </p>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- 章节信息-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-list fa-fw"></i>
+                <strong>《{{ book.name }}》全部章节目录</strong>
+            </div>
+            <dl class="panel-body panel-chapterlist">
+                {% for i in chapters %}
+                    <dd class="col-md-3">第{{ forloop.counter }}章 {{ i }}</dd>
+                {% endfor %}
+            </dl>
+        </div>
+    </div>
+
+    <!-- 提交评论-->
+    <div class="panel panel-default col-md-4">
+        <div class="panel-heading">
+            <span class="text-muted">
+                <i class="fa fa-fire fa-fw"></i><strong>撰写评论</strong>
+            </span>
+        </div>
+        <div class="panel-body">
+            <input type="hidden" value="{{ bookid }}" id="book_id">
+            <input type="hidden" value="{{ request.session.user_id }}" id="user_id">
+            <textarea rows="4" class="form-control" placeholder="在这里写下你的评论" id="comment_content"></textarea></br>
+            <p class="pull-right">
+                <button class="btn btn-primary" id="subcmt" type="submit">📤提交评论</button>
+            </p>
+        </div>
+
+        <div class="row">
+            <div class="clear"></div>
+        </div>
+    </div>
+    <!-- 热评-->
+    <div class="panel panel-default hidden-xs col-md-4">
+        <div class="panel-heading"><span class="text-muted"><i class="fa fa-fire fa-fw"></i>热门评论</span></div>
+        <div>
+            <p class="hidden" id="uid">{{ request.session.user_id }}</p>
+            <ul class="list-group list-top">
+                {% for i in cms %}
+                    <li class="list-group-item">
+                        <img class="img-circle" src="{% randprofileimg i.user.id %}" height="30" width="30">
+                        <span>{{ i.user.nickname }}</span>&nbsp;&nbsp;
+                        <span>{{ i.c_time }}</span>
+                        <p class="intro">{{ i.comment }}</p>
+                        <p class="hidden cid">{{ i.id }}</p>
+                        <p align="right" class="update">
+                            <a class="btn cmtlike">
+                                <i class="fa {% cmtlikebtn i.id userid %} fa-fw"></i>
+                            </a>
+                            <span class="pnum">{{ i.p_num }}</span>
+
+                        </p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- 底部推荐-->
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><span class="text-muted"><i class="fa fa-fire fa-fw"></i>同类图书推荐</span></div>
+            <div class="panel-body panel-friendlink">
+                {% for i in rmds %}
+                    <a href="{% url "libfront:bookdetail" i.id %}">{{ i.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="hidden" id="myform">
+    <form action="#" method="#" id="borrowform">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="user" class="col-sm-4 control-label">当前用户：</label>
+            <input disabled="true" value="{{ request.session.nickname }}" name="user">
+        </div>
+        <div class="form-group">
+            <label for="name" class="col-sm-4 control-label">书名：</label>
+            <input disabled="true" value="{{ book.name }}" name="name">
+        </div>
+        <div class="form-group">
+            <label for="author" class="col-sm-4 control-label">作者：</label>
+            <input disabled="true" value="{{ book.author }}" name="author">
+        </div>
+        <div class="form-group">
+            <label for="pubdate" class="col-sm-4 control-label">出版日期：</label>
+            <input disabled="true" value="{{ book.pubdate | date:"Y-m-d" }}" name="pubdate">
+        </div>
+        <div class="form-group">
+            <label for="publisher" class="col-sm-4 control-label">出版社：</label>
+            <input disabled="true" value="{{ book.publisher }}" name="publisher">
+        </div>
+        <div class="form-group">
+            <label for="score" class="col-sm-4 control-label">评分：</label>
+            <input disabled="true" value="{{ book.score }}/10" name="score">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">当前库存/总库存：</label>
+            <input disabled="true" value="{{ book.stock_now }} / {{ book.stock_all }}">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">历史借阅数：</label>
+            <input disabled="true" value="{{ book.borrow_num }}">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">还书日期：</label>
+            <input type="date" name="endtime" id="endtime" value="1900-01-01">
+            <script>
+                var date = new Date();
+                var str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+                if (date.getDate() < 10) {
+                    str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-0" + date.getDate();
+                }
+                console.log(str);
+                $("#endtime").attr("value", str);
+            </script>
+        </div>
+        <input class="hidden" name="book_id" value="{{ book.id }}">
+        <input class="hidden" name="user_id" value="{{ request.session.user_id }}">
+        {#        <div class="form-group">#}
+        {#            <label class="col-sm-4 control-label">借阅时长：</label>#}
+        {#            <select name="duration">#}
+        {#                <option value="1">1 天</option>#}
+        {#                <option value="3">3 天</option>#}
+        {#                <option value="7">7 天</option>#}
+        {#                <option value="15">15天</option>#}
+        {#                <option value="30">30天</option>#}
+        {#            </select>#}
+        {#        </div>#}
+
+    </form>
+</div>
+<span style="display:none">
+    <script>
+
+        function submitBorrow() {
+            console.log("hi");
+            $.ajax({
+                url: "{% url "libfront:borrow" %}",
+                method: "POST",
+                data: $('#borrowform').serialize(),
+                success: function (data) {
+                    //console.log(data);//打印服务端返回的数据(调试用)
+                    var code = data["code"];
+                    if (code === 500) {
+                        alert("尚未登录，请先登录再进行操作。")
+                    } else if (code === 200) {
+                        alert("借阅成功，快去看看吧，记得及时还书喔。");
+                        $(".closebtn").click();
+                    } else if (code === 401) {
+                        alert("书籍库存不足，借阅失败，下次早点来吧。")
+                    } else if (code === 400) {
+                        alert("发生错误，借阅失败！")
+                    }
+                },
+                error: function () {
+                    alert("发生未知错误，操作失败！");
+                }
+            });
+        }
+    </script>
+    <script>
+		$(document).ready(function (e) {
+            $("#borrowbook").click(function () {
+                var html = $("#myform").html();
+                {#$("#myform").html("nothing");#}
+                {#console.log(html);#}
+                var button = "<p align='right'>" +
+                    "<input class='btn btn-primary' type='button' value='重置' />&nbsp&nbsp" +
+                    "<input class='btn btn-primary' type='button' value='确定' onclick='submitBorrow()'/>&nbsp&nbsp" +
+                    "<input class='btn btn-primary closebtn' type='button' value='取消' />" +
+                    "</p>";
+
+                var win = new Window({
+                    width: 500, //宽度
+                    height: 600, //高度
+                    title: '{{ book.name }}-借阅', //标题
+                    content: html, //内容
+                    isMask: true, //是否遮罩
+                    buttons: button, //按钮
+                    isDrag: true, //是否移动
+                });
+            })
+        });
+	</script>
+</span>
+
+{% include "libFront/footerbar.html" %}
+</body>
+</html>
