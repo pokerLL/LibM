@@ -207,32 +207,17 @@
             <input type="date" name="endtime" id="endtime" value="1900-01-01">
             <script>
                 var date = new Date();
-                var str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-                if (date.getDate() < 10) {
-                    str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-0" + date.getDate();
-                }
+                var str = date.getFullYear() + "-" + ((date.getMonth() < 9) ? "0" : "") + (date.getMonth()+1) + "-" + ((date.getDate() < 10) ? "0" : "") + date.getDate();
                 console.log(str);
                 $("#endtime").attr("value", str);
             </script>
         </div>
         <input class="hidden" name="book_id" value="{{ book.id }}">
         <input class="hidden" name="user_id" value="{{ request.session.user_id }}">
-        {#        <div class="form-group">#}
-        {#            <label class="col-sm-4 control-label">借阅时长：</label>#}
-        {#            <select name="duration">#}
-        {#                <option value="1">1 天</option>#}
-        {#                <option value="3">3 天</option>#}
-        {#                <option value="7">7 天</option>#}
-        {#                <option value="15">15天</option>#}
-        {#                <option value="30">30天</option>#}
-        {#            </select>#}
-        {#        </div>#}
-
     </form>
 </div>
 <span style="display:none">
     <script>
-
         function submitBorrow() {
             console.log("hi");
             $.ajax({
@@ -263,8 +248,7 @@
 		$(document).ready(function (e) {
             $("#borrowbook").click(function () {
                 var html = $("#myform").html();
-                {#$("#myform").html("nothing");#}
-                {#console.log(html);#}
+
                 var button = "<p align='right'>" +
                     "<input class='btn btn-primary' type='button' value='重置' />&nbsp&nbsp" +
                     "<input class='btn btn-primary' type='button' value='确定' onclick='submitBorrow()'/>&nbsp&nbsp" +

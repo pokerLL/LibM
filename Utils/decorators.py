@@ -1,7 +1,9 @@
 from functools import wraps
 
+from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render
+
 
 def login_required(func):
     @wraps(func)
@@ -73,4 +75,13 @@ def auth_administrator_required_json(func):
         # print(request.session.get("nickname") + "已登陆")
         return func(request, *args, **kwargs)
 
+    return inner
+
+
+def cache_is_open(func):
+    @wraps(func)
+    def inner(request, *args, **kwargs):
+        if not settings.USE_MY_REDIS_CACHE:
+            return None
+        return func(request, *args, **kwargs)
     return inner

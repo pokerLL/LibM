@@ -40,7 +40,7 @@ def index(request):
     return render(request, "libFront/index.html", locals())
 
 
-# @cache_it_httpresponse(60, prefix="lf")
+# # @cache_it_httpresponse(60, prefix="lf")
 def bookdetail(request, bookid):
     book = libBook.objects.get(id=bookid)
     catgs = book.categ.all()[:3]
@@ -53,7 +53,7 @@ def bookdetail(request, bookid):
     return render(request, "libFront/bookdetail.html", locals())
 
 
-@cache_it_httpresponse(60 * 60, prefix="lf")
+# @cache_it_httpresponse(60 * 60, prefix="lf")
 def ranklist(request, st, pg):
     ONE_PAGE_ITEM_NUM = 15
     st = "-" + st
@@ -63,7 +63,7 @@ def ranklist(request, st, pg):
     return render(request, "libFront/ranklist.html", locals())
 
 
-@cache_it_httpresponse(60 * 60, prefix="lf")
+# @cache_it_httpresponse(60 * 60, prefix="lf")
 def categorylist(request, categid, pg):
     ONE_PAGE_ITEM_NUM = 15
     cat = libCategory.objects.get(id=categid)
@@ -239,7 +239,7 @@ def register(request):
     return render(request, "libFront/login.html", {'msg': msg, 'lgf': lgf})
 
 
-@cache_it_httpresponse(prefix="lf", expiration=10)
+# @cache_it_httpresponse(prefix="lf", expiration=10)
 @login_required
 def userdetail(request, id):
     user = libUser.objects.filter(id=request.session.get("user_id"))[0]
@@ -270,13 +270,13 @@ def userdetail(request, id):
     return render(request, "libFront/userdetail.html", locals())
 
 
-@cache_it_httpresponse(60 * 60 * 24, prefix="lf")
+# @cache_it_httpresponse(60 * 60 * 24, prefix="lf")
 def categorys(request):
     catgs = libCategory.objects.all()
     return render(request, "libFront/categorys.html", locals())
 
 
-@cache_it_httpresponse(prefix="lf")
+# @cache_it_httpresponse(prefix="lf")
 def search(request, kw, pg):
     ONE_PAGE_ITEM_NUM = 15
     books = libBook.objects.filter(Q(name__icontains=kw) | Q(author__icontains=kw) | Q(publisher__icontains=kw))
@@ -481,7 +481,7 @@ def new_message_ajax(request):
     return JsonResponse(data)
 
 
-@cache_it_json(600, prefix="lf")
+# @cache_it_json(600, prefix="lf")
 def load_headerbar_ajax(request):
     print("loading header")
     catgs = list(libCategory.objects.values_list("name", "id").all().order_by("-c_time"))

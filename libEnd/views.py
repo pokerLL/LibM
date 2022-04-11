@@ -37,7 +37,7 @@ def index(request):
     return render(request, "libEnd/index.html", locals())
 
 
-@cache_it_httpresponse(10, prefix="lm")
+# @cache_it_httpresponse(10, prefix="lm")
 def userlist(request):
     website_title = "用户管理"
     page_title = "用户信息"
@@ -58,7 +58,7 @@ def userlist(request):
     return render(request, "libEnd/userlist.html", locals())
 
 
-@cache_it_httpresponse(10, prefix="lm")
+# @cache_it_httpresponse(10, prefix="lm")
 def booklist(request):
     website_title = "书籍管理"
     page_title = "书籍信息"
@@ -81,7 +81,7 @@ def booklist(request):
     return render(request, "libEnd/booklist.html", locals())
 
 
-@cache_it_httpresponse(10, prefix="lm")
+# @cache_it_httpresponse(10, prefix="lm")
 def messages(request):
     website_title = "书苑-留言板"
     page_title = "留言板"
@@ -91,7 +91,7 @@ def messages(request):
     return render(request, "libEnd/messages.html", locals())
 
 
-@cache_it_httpresponse(10, prefix="lm")
+# @cache_it_httpresponse(10, prefix="lm")
 def userdetail(request, id):
     website_title = "用户管理"
     page_title = "新建用户"
@@ -103,7 +103,7 @@ def userdetail(request, id):
     return render(request, "libEnd/userdetail.html", locals())
 
 
-@cache_it_httpresponse(10, prefix="lm")
+# @cache_it_httpresponse(10, prefix="lm")
 def authoritylist(request):
     website_title = "用户管理"
     page_title = "管理员设置"
@@ -124,7 +124,7 @@ def authoritylist(request):
     return render(request, "libEnd/userlist.html", locals())
 
 
-@cache_it_httpresponse(10, prefix="lm")
+# @cache_it_httpresponse(10, prefix="lm")
 def userrepsdlist(request):
     website_title = "用户管理"
     page_title = "待更改密码用户列表"
@@ -134,7 +134,7 @@ def userrepsdlist(request):
     return render(request, "libEnd/userlist.html", locals())
 
 
-@cache_it_httpresponse(10, prefix="lm")
+# @cache_it_httpresponse(10, prefix="lm")
 def usersearch(request, kw):
     website_title = "用户管理"
     page_title = "搜索结果 - " + kw
@@ -159,7 +159,7 @@ def usersearch(request, kw):
     return render(request, "libEnd/userlist.html", locals())
 
 
-@cache_it_httpresponse(10, prefix="lm")
+# @cache_it_httpresponse(10, prefix="lm")
 def booksearch(request, kw):
     website_title = "书籍管理"
     page_title = "搜索结果 - " + kw
@@ -183,7 +183,7 @@ def booksearch(request, kw):
     return render(request, "libEnd/booklist.html", locals())
 
 
-@cache_it_httpresponse(10, prefix="lm")
+# @cache_it_httpresponse(10, prefix="lm")
 def bookdetail(request, id):
     website_title = "书籍管理"
     page_title = "新建书籍"
@@ -196,7 +196,7 @@ def bookdetail(request, id):
     return render(request, "libEnd/bookdetail.html", locals())
 
 
-@cache_it_httpresponse(60 * 10)
+# @cache_it_httpresponse(60 * 10)
 def bookcategory(request, id):
     cat = md.libCategory.objects.get(id=id)
     website_title = "书籍管理"
@@ -330,7 +330,7 @@ def operation(request):
     return JsonResponse(res)
 
 
-@cache_it_httpresponse(10, prefix="lm")
+# @cache_it_httpresponse(10, prefix="lm")
 def bbdetail(request, type, id):
     website_title = "借阅管理"
 
@@ -354,7 +354,7 @@ def bbdetail(request, type, id):
     return render(request, "libEnd/bbdetail.html", locals())
 
 
-@cache_it_httpresponse(10, prefix="lm")
+# @cache_it_httpresponse(10, prefix="lm")
 def borrowlist(request):
     website_title = "借阅管理"
     page_title = "在借"
@@ -379,7 +379,7 @@ def borrowlist(request):
     return render(request, "libEnd/bblist.html", locals())
 
 
-@cache_it_httpresponse(10, prefix="lm")
+# @cache_it_httpresponse(10, prefix="lm")
 def backlist(request):
     website_title = "借阅管理"
     page_title = "历史记录"
@@ -404,7 +404,7 @@ def backlist(request):
     return render(request, "libEnd/bblist.html", locals())
 
 
-@cache_it_httpresponse(10, prefix="lm")
+# @cache_it_httpresponse(10, prefix="lm")
 def bookcomment(request, id):
     website_title = "书籍管理"
     page_title = "书籍评论"
@@ -416,7 +416,7 @@ def bookcomment(request, id):
     return render(request, "libEnd/bookcomment.html", locals())
 
 
-@cache_it_httpresponse(10, prefix="lm")
+# @cache_it_httpresponse(10, prefix="lm")
 def commentconfirm(request):
     website_title = "网站管理"
     page_title = "评论审核"
@@ -426,7 +426,7 @@ def commentconfirm(request):
     return render(request, "libEnd/commentconfirm.html", locals())
 
 
-@cache_it_httpresponse(10, prefix="lm")
+# @cache_it_httpresponse(10, prefix="lm")
 def badborrow(request):
     website_title = "借阅管理"
     page_title = "逾期"
@@ -451,7 +451,7 @@ def badborrow(request):
     return render(request, "libEnd/bblist.html", locals())
 
 
-@cache_it_httpresponse(10, prefix="lm")
+# @cache_it_httpresponse(10, prefix="lm")
 def bookcategorys(request):
     website_title = "书籍管理"
     page_title = "全部分类"
@@ -463,7 +463,7 @@ def bookcategorys(request):
     return render(request, "libEnd/bookcategorys.html", locals())
 
 
-@cache_it_httpresponse(10, prefix="lm")
+# @cache_it_httpresponse(10, prefix="lm")
 def announcement(request):
     website_title = "网站管理"
     page_title = "网站公告"
@@ -479,7 +479,7 @@ def _api(request):
         return _api_get(request)
 
 
-@cache_it_json(expiration=60)
+# @cache_it_json(expiration=60)
 def _api_get(request):
     global ob
     obj = request.POST.get("object", None)

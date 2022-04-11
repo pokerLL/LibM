@@ -2,12 +2,14 @@ import functools
 import json
 
 import redis
+from django.conf import settings
 from django.http import HttpResponse, JsonResponse
-
 
 # django_version 3.1.2
 # redis_version 3.2.1
 # redis_pack_version 2.10.6
+from Utils.decorators import cache_is_open
+
 
 class RedisLRUCacheDict:
 
@@ -40,7 +42,9 @@ class RedisLRUCacheDict:
             redis_conn.delete(key)
 
 
-CACHE = RedisLRUCacheDict()
+if settings.USE_MY_REDIS_CACHE:
+    CACHE = RedisLRUCacheDict()
+
 
 
 def cache_it_httpresponse(expiration=600, prefix=""):
@@ -69,6 +73,7 @@ def cache_it_httpresponse(expiration=600, prefix=""):
     return wrapper
 
 
+@cache_is_open
 def cache_it_json(expiration=600, prefix=""):
     def wrapper(func):
         @functools.wraps(func)
@@ -95,6 +100,7 @@ def cache_it_json(expiration=600, prefix=""):
     return wrapper
 
 
+@cache_is_open
 def cache_it_func(expiration=60, prefix=""):
     def wrapper(func):
         @functools.wraps(func)

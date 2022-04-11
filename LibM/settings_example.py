@@ -160,3 +160,6 @@ EMAIL_HOST_USER = 'xxxx'
 EMAIL_HOST_PASSWORD = 'xxxx'
 
 EMAIL_CONFIRM_EXPIRE_TIME = 1  # day
+
+# 开启自制简陋redis缓存
+USE_MY_REDIS_CACHE = True
