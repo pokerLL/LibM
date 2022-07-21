@@ -250,7 +250,7 @@ def fakeTestData():
                                gender=fk.gender(), type=1, has_confirmed=True)
         libUser.objects.create(nickname="qbit", account="q", password="1",
                                email=fk.account() + "@qq.com", birthday=fk.datebefore(),
-                               gender=fk.gender(), type=1, has_confirmed=True)
+                               gender=fk.gender(), type=2, has_confirmed=True)
     except:
         pass
     books = libBook.objects.all()

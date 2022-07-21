@@ -37,6 +37,14 @@
     <script>window.location.replace("{% url "libfront:index" %}")</script>
 {% endif %}
 <div class="container">
+    <div class="alert alert-info">
+        <div style="text-align: left;">
+            测试账号：<br />
+            普通账号:q,密码:1; - (只能在网站前台进行操作,不能进入网站后台)<br />
+            管理员账号:p,密码:1; - (可进入网站后台-点击秘密基地，但不能更改用户权限)<br />
+            超级管理员账号:s,密码:1 - (可进行任何操作)。
+        </div>
+    </div>
     {% if msg %}
         <div class="alert alert-warning">{{ msg }}</div>
     {% endif %}
