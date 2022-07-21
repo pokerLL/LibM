@@ -1,3 +1,4 @@
+from libFront.models import *
 import os
 import random
 import sys
@@ -15,8 +16,6 @@ sys.path.append(BASE_DIR)
 # 启动django 便于使用orm系统
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "LibM.settings")
 django.setup()
-
-from libFront.models import *
 
 
 ##########################
@@ -237,15 +236,21 @@ def correctcomment():
 
 def fakeTestData():
     try:
+        libUser.objects.get(account="s").delete()
+        libUser.objects.get(account="p").delete()
+        libUser.objects.get(account="q").delete()
+    except:
+        pass
+    try:
         libUser.objects.create(nickname="super", account="s", password="1",
                                email=fk.account() + "@qq.com", birthday=fk.datebefore(),
-                               gender=fk.gender(), type=0)
+                               gender=fk.gender(), type=0, has_confirmed=True)
         libUser.objects.create(nickname="poker", account="p", password="1",
                                email=fk.account() + "@qq.com", birthday=fk.datebefore(),
-                               gender=fk.gender(), type=1)
+                               gender=fk.gender(), type=1, has_confirmed=True)
         libUser.objects.create(nickname="qbit", account="q", password="1",
                                email=fk.account() + "@qq.com", birthday=fk.datebefore(),
-                               gender=fk.gender(), type=1)
+                               gender=fk.gender(), type=1, has_confirmed=True)
     except:
         pass
     books = libBook.objects.all()
@@ -275,15 +280,15 @@ def fakeTestData():
 
 
 if __name__ == "__main__":
-    # fakecategory()
-    # fakeuser()
-    # fakebook()
-    # fakecomment()
-    # fakeborrow()
-    # fakeback()
-    # fakebookfav()
-    # fakecommentfav()
-    # correctbook()
-    # correctcomment()
-    # fakeMessage()
+    fakecategory()
+    fakeuser()
+    fakebook()
+    fakecomment()
+    fakeborrow()
+    fakeback()
+    fakebookfav()
+    fakecommentfav()
+    correctbook()
+    correctcomment()
+    fakeMessage()
     fakeTestData()

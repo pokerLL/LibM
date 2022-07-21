@@ -88,9 +88,9 @@ DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
 #         'NAME': 'django_libm',  # 数据库名
-#         'USER': 'xxxx',  # 账号
-#         'PASSWORD': 'xxxx',  # 密码
-#         'HOST': 'xxxx',  # HOST
+#         'USER': 'root',  # 账号
+#         'PASSWORD': '123456',  # 密码
+#         'HOST': '127.0.0.1',  # HOST
 #         'POST': 3306,  # 端口
 #     }
 # }
@@ -154,10 +154,10 @@ CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
 
 # 邮件验证模块参数
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.xxxx.com'
+EMAIL_HOST = 'smtp.sina.com'
 EMAIL_PORT = 25
-EMAIL_HOST_USER = 'xxxx'
-EMAIL_HOST_PASSWORD = 'xxxx'
+EMAIL_HOST_USER = 'rzybz1024@sina.com'
+EMAIL_HOST_PASSWORD = '8a8b0436a8eafb3b'
 
 EMAIL_CONFIRM_EXPIRE_TIME = 1  # day
 

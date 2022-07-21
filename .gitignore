@@ -1,5 +1,4 @@
 .idea/*
-__pycache__/*
-*.pyc
-settings.py
-*_initial.py
+__pycache__/
+*.py[co]
+migrations/00*
