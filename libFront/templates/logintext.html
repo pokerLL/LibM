@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>云书苑</title>
+		<link rel="icon" href="{% static 'picture/favicon.ico' %}" type="image/x-icon" />
+		<link rel="stylesheet" href="{% static 'css/login.css' %}"/>
+ 		<script src="{% static 'js/jquery191.min.js' %}"></script>
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+		<script src="{% static 'js/book.js' %}"></script>
+		<script src="{% static 'js/tools.js' %}"></script>
+		<script src="{% static 'js/attach.js' %}"></script>
+	</head>
+	<body>
+	{% if request.session.has_login %}
+	    <script>window.location.replace("{% url "libfront:index" %}")</script>
+	{% endif %}
+
+	<div class="container-box">
+		{% if msg %}
+			<div class="alert alert-warning" style="text-align: center;margin: 0px 200px 30px 200px;">{{msg}}</div>
+		{% endif %}
+		{% if not msg %}
+			<div style="height: 100px"></div>
+		{% endif %}
+		 {% if rgf.captcha.errors %}
+			<div class="alert alert-warning">{{ rgf.captcha.errors }}</div>
+		{% endif %}
+		<div class="container-n">
+		    <div class="register-box slide-up">
+		        <h2 class="register-title">
+		            <span>没有账号，去</span>注册
+		        </h2>
+		        <form class="input-box" method="post" action="{% url 'libfront:register' %}" onsubmit="return checkRegisterForm(this)">
+					{% csrf_token %}
+		            <input type="text" name="nickname" id="nickname" placeholder="用户名">
+					<input type="text"  name="account" id="account" placeholder="账号">
+		            <input type="password"  name="password" id="password" placeholder="密码">
+		            <input type="password" name="repassword" id="repassword" placeholder="确认密码">
+					<input type="email" name="email" id="email" placeholder="邮箱">
+		        </form>
+		        <button type="submit" id="regist">注册</button>
+		    </div>
+		    <div class="login-box">
+		        <div class="center">
+		            <h2 class="login-title">
+		                <span>已有账号，去</span>登录
+		            </h2>
+					<a class="button1 b btn-default btn-primary logbtn" utp="n">用户登录</a>
+					<a class="button2 btn-default logbtn" utp="r">管理员登录</a>
+					<form method="post" action="{% url 'libfront:login' %}">
+						{% csrf_token %}
+						<input type="hidden" value="n" id="user_login_type" name="user_login_type">
+						<p class="tit">账号</p>
+						<div  class="input-box">
+							{{ lgf.account }}
+	<!--						<input type="text" placeholder="账号">-->
+						</div>
+						<p class="tit">密码</p>
+						<div  class="input-box">
+						{{ lgf.password }}
+
+	<!--						<input type="password" placeholder="密码">-->
+						</div>
+						<div class="tit">
+							<span>验证码</span>
+							{{ lgf.captcha }}
+							<a></a>
+						</div>
+
+						<button type="submit" class="btn btn-primary">登录</button>
+					</form>
+
+		        </div>
+		    </div>
+		</div>
+
+
+	</div>
+
+		<script src="{% static 'js/login.js' %}"></script>
+
+    <script>
+        //点击刷新验证码
+		$('.captcha').click(function () {
+			console.log('click');
+			$.get("{% url 'captcha-refresh' %}",
+				function (result) {
+					$('.captcha').attr('src', result['image_url']);
+					$('#id_captcha_0').val(result['key'])
+				});
+		});
+    </script>
+
+</div>
+	</body>
+</html>

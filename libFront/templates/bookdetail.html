@@ -1,0 +1,656 @@
+{% load static %}
+{% load mytemplate %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>{{ book.name }}-{{ book.author }}-书苑</title>
+    <script src="{% static 'js/jquery191.min.js' %}"></script>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/window.css' %}" rel="stylesheet">
+    <link href="{% static 'css/site.css' %}" rel="stylesheet">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/dialog.js' %}"></script>
+    <script src="{% static 'js/window.js' %}"></script>
+    <script src="{% static 'js/tools.js' %}"></script>
+
+</head>
+<style>
+    .bookdetail{
+		width: 1000px;
+		margin: 20px auto;
+		background: #fff;
+		box-shadow: 0 0 4px 1px hsl(0deg 0% 81% / 50%);
+		padding: 33px 20px 35px 42px;
+		display: flex;
+	}
+	.detail-img{
+		width: 278px;
+		height: 370px;
+	}
+	.detail-img img{
+		width: 100%;
+		height: 100%;
+	}
+	.bookdetail .bookmate{
+		width: 650px;
+		margin-left: 40px;
+		margin-right: 104px;
+		position: relative;
+	}
+	.bookmate h3{
+		font-size: 18px;
+		color: #3b3b3d;
+		letter-spacing: -.22px;
+		margin-bottom: 10px;
+	}
+	.bookdetail .bookdata{
+		width: 522px;
+		height: 78px;
+		font-size: 14px;
+		color: #6e6e6e;
+		letter-spacing: -.17px;
+		line-height: 26px;
+		max-height: 150px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+	}
+	.bookdetail .sooks{
+		margin-top: 30px;
+		display: flex;
+		flex-wrap: wrap;
+	}
+	.sooks p{
+		width: 250px;
+		height: 30px;
+		font-size: 14px;
+		color: #9b9b9b;
+		letter-spacing: -.17px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		margin-top: 8px;
+	}
+	.sooks .bookkind{
+		height: 30px;
+		font-size: 14px;
+		color: #9b9b9b;
+		margin-top: 8px;
+	}
+	.classbooktag{
+		margin-bottom: 5px;
+	}
+	.classbooktag a{
+		display: inline-block;
+		overflow: hidden;
+		height: 22px;
+		margin-right: 10px;
+		margin-bottom: 5px;
+		padding: 0 10px;
+		text-align: center;
+		vertical-align: middle;
+		border-width: 1px;
+		border-style: solid;
+		border-radius: 15px;
+		border-color: deepskyblue;
+		color: deepskyblue;
+		text-decoration: none;
+	}
+	.btn-primary{
+        background-color: #ECF5FF;
+        border-color:#B3D8FF;
+        color: #409EFF;
+        border-radius: 10px;
+        padding: 6px;
+        margin-right:10px;
+	}
+	.btn-primary2{
+	    background-color: #FFF;
+        border-color:#FFF;
+        color: #409EFF;
+        width:30px;
+        height:30px;
+        border-radius:50px;
+
+	}
+	.btn-primary2:hover{
+	    color:#216ebe;
+
+	}
+	.btn-success {
+        border-radius: 10px;
+        background-color: #F0F9EB;
+        border-color: #C2E7B0;
+        color: #67C244;
+        margin:10px;
+        padding: 6px;
+    }
+    .btn-info {
+        border-radius: 10px;
+        background-color: #75cfe94f;
+        border-color: #46b8dafa;
+        color: #42b1d2;
+        margin:10px;
+        padding: 6px;
+    }
+
+    .catalogue{
+		width: 1200px;
+		margin: 84px auto 0;
+	}
+	.catalogue .catalogue-title{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 30px;
+	}
+	.lefttitle img{
+		width: 27px;
+	}
+	.lefttitle span{
+		font-size: 21px;
+		color: #3B3B3D;
+		margin: 10px;
+	}
+	.c-title .c-img{
+	    width: 27px;
+	    margin-right:10px;
+	}
+	.catalogue .opening{
+		overflow: hidden;
+		left: -40px;
+        position: relative;
+	}
+	.catalogue .opening li{
+		height: 22px;
+		margin-bottom: 12px;
+		display: flex;
+		-webkit-box-pack: justify;
+		justify-content: space-between;
+		font-family: PingFangSC-Regular;
+		font-size: 16px;
+		color: #3b3b3d;
+		letter-spacing: -.19px;
+		cursor: pointer;
+	}
+	.catalogue .opening li .dot{
+		flex: 1;
+		overflow: hidden;
+		margin: 0 10px;
+	}
+	.catalogue .opening li .pages{
+		width: 20px;
+		text-align: center;
+	}
+	li,ul{
+		list-style: none;
+	}
+
+    .comments-box{
+		margin-top: 40px;
+
+	}
+	.comments-box .c-title{
+		height: 33px;
+		width: 1040px;
+		border-bottom: 2px solid #c20c0c;
+
+	}
+	.comments-box .c-title h3{
+		font-size: 20px;
+		line-height: 28px;
+		font-weight: normal;
+		display: inline;
+	}
+	.c-title .sub{
+		margin: 9px 0 0 10px;
+
+		color: #666666;
+	}
+	.comments-box .comments{
+		margin-top: 20px;
+	}
+	.comments-box .comments .iptarea{
+		margin-bottom: 20px;
+		display: flex;
+	}
+	.iptarea .ip-remark{
+		width: 900px;
+		margin-left: 20px;
+
+	}
+	.iptarea .ip-head{
+		margin-left: 20px;
+	}
+	.iptarea .ip-remark .el-button{
+		margin-left: 910px;
+		position:relative;
+		top: -33px;
+	}
+
+	.ic-box{
+		position: relative;
+		top: -80px;
+	}
+	.corr {
+	    position: absolute;
+	    top: 11px;
+	    left: -7px;
+	}
+	.u-arr {
+	    width: 13px;
+	    height: 14px;
+	    overflow: hidden;
+	}
+	.u-arr .arrline {
+	    color: #cdcdcd;
+	}
+	.u-arr .arrclr {
+	    margin: -10px 0 0 1px;
+	    color: #fff;
+	}
+	.u-arr .arrline, .u-arr .arrclr, .u-arr .arriner {
+	    display: block;
+	    font-family: "SimSun";
+	    font-size: 15px;
+	    font-style: normal;
+	    font-weight: normal;
+	    height: 10px;
+	    line-height: normal;
+	}
+
+	.comments .cmmts .u-hd{
+		position: relative;
+		top: 10px;
+		height: 20px;
+		border-bottom: 1px solid #cfcfcf;
+		font-size: 100%;
+	}
+	.comments .cmmts .itm{
+		padding: 15px 0;
+		border-top: 1px dotted #cccccc;
+		display: flex;
+	}
+	.itm .cmmts-head{
+        margin-top:15px;
+		width: 50px;
+		height: 50px;
+
+	}
+	.comments .cmmts .cntwrap{
+		margin-left: 10px;
+	}
+	.cntwrap .f-brk{
+
+		width: 950px;
+		overflow: hidden;
+		line-height: 20px;
+		display: block;
+	}
+	.cntwrap .f-brk h3{
+		font-size: 15px;
+		font-weight: 400;
+		margin-bottom: 5px;
+
+	}
+	.cntwrap .f-brk p{
+		font-size: 13px;
+		color: #333333;
+	}
+	.cntwrap .rp{
+		margin-top: 15px;
+		text-align: right;
+	}
+	.cntwrap .rp .time{
+		color: #999999;
+		float: left;
+		font-size: 12px;
+		padding:6px 0;
+	}
+	.rp .zan .icon{
+		width: 20px;
+		height: 20px;
+		fill: #409EFF;
+	}
+	.rp .zan{
+		text-decoration: none;
+		font-size: 13px;
+		top: -5px;
+		position: relative;
+	}
+	.rp .zan span{
+		position: relative;
+		top: -5px;
+		margin-left: 5px;
+		color: #409EFF;
+	}
+
+	.pull-right {
+        position: relative;
+        top: -35px;
+        left: 85px;
+    }
+
+    .cmtline{
+        width: 1040px;
+        border-bottom: 2px solid #c20c0c;
+        margin-top:30px;
+    }
+</style>
+<body>
+
+<!-- 此处是header -->
+
+{% include 'headerbar.html' %}
+
+<div class="container body-content">
+    <div class="big-class">
+        <div class="class-box">
+            <!-- 面包屑导航 -->
+            <ol class="breadcrumb">
+                <li><a href="{% url 'libfront:index' %}"><i class="fa fa-home fa-fw"></i>首页</a></li>
+                {% if catg %}
+                    <li><a href="{% url 'libfront:category' catg.id 1 %}">{{ catg.name }}</a></li>{% endif %}
+                <li class="active">{{ book.name }}</li>
+            </ol>
+            <!-- 书籍信息-->
+            <div class="bookdetail">
+                <div class="detail-img">
+                    <img src="{% randbookimg book.id %}"/>
+                </div>
+                <div class="bookmate">
+                    <h3>{{book.name}}</h3>
+                    <p class="booktag">
+                        <a class="red" href="{% url "libfront:search" book.author 1 %}"
+                           target="_blank">{{ book.author }}</a>
+                        {% if catg %}
+                            <a class="red" href="{% url "libfront:category" catg.id 1 %}">{{ catg }}</a>
+                        {% endif %}
+                        <a class="red" target="_blank">在借：{% intdiff book.stock_all book.stock_now %} </a>
+                        <a class="red" target="_blank">剩余库存：{{ book.stock_now }} </a>
+                    </p>
+                    <div class="bookdata">
+                        <p>简介：</p>
+                        {{ book.description }}
+                    </div>
+                    <div class="sooks">
+                        <p>作者：<a href="{% url 'libfront:search' book.author 1 %}">{{ book.author }}</a></p>
+                        <p>出版社：<a href="{% url 'libfront:search' book.publisher 1 %}">{{ book.publisher }}</a></p>
+                        <p>出版时间：<span>{{ book.pubdate }}</span></p>
+                        <span class="bookkind">图书类型：</span>
+                        {% for it in catgs %}
+                        <span class="classbooktag"><a href="{% url 'libfront:category' it.id 1 %}">{{ it.name }}</a></span>
+                        {% endfor %}
+                        <p> 图书评分(借阅数)：<a href="{% url 'libfront:ranklist' "score" 1 %}">{{ book.score }}/{{ 10 }}
+                            ({{ book.borrow_num }})</a>
+                        </p>
+                    </div>
+                    <div class="row">
+                        <p class="hidden" id="uid">{{ request.session.user_id }}</p>
+                        <p class="hidden" id="bid">{{ book.id }}</p>
+                        <span class="col-md-8">
+                                <button class="btn btn-primary" type="button" id="favbook">
+                                    <i class="fa fa-thumbs-up fa-fw"></i>点赞书籍
+                                </button>
+                                {% if request.session.user_type != 3 %}
+                                <button class="btn btn-success" type="button" id="borrowbook">
+                                    <i class="fa fa-plus fa-fw"></i>借阅书籍
+                                </button>
+                                {% endif %}
+                                <button class="btn btn-info" type="button" id="collectbook">
+                                    <i class="fa fa-star fa-fw"></i>收藏书籍
+                                </button>
+                        </span>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 章节信息-->
+            <div class="catalogue">
+                <div class="catalogue-title">
+                    <div class="lefttitle">
+                        <img src="data:image/png;base64,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"/>
+                        <span>《{{ book.name }}》全部章节目录</span>
+                    </div>
+                </div>
+                <ul class="opening">
+                    {% for i in chapters %}
+                    <li>
+                        <span>第{{ forloop.counter }}章&nbsp;<span style="color:#6e6e6e;font-size:14px">{{ i }}</span></span>
+                        <span class="dot">..................................................................................................................................................................................................................................................................</span>
+                        <span class="pages">{{ forloop.counter }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <!-- 评论区-->
+            <div class="comments-box">
+                <div class="c-title">
+                    <img class="c-img" src="data:image/png;base64,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"/>
+                    <h3>
+                        评论
+                    </h3>
+                    <span class="sub">共{{cmsnum}}条评论</span>
+                </div>
+                <div class="comments">
+                    <div class="iptarea">
+
+                        <div class="ip-head">
+                            <img class="img-circle" style="background-color: #75cfe94f;">
+                        </div>
+                        <div class="ip-remark" >
+                            <input type="hidden" value="{{ bookid }}" id="book_id">
+                            <input type="hidden" value="{{ request.session.user_id }}" id="user_id">
+                            <textarea style="border-color: #cdcdcd;width: 954px; height: 94px;" rows="4" class="form-control" placeholder="在这里写下你的评论" id="comment_content"></textarea></br>
+                            <p class="pull-right">
+                                <button class="btn btn-primary2" id="subcmt" type="submit"><i class="fa fa-mail-reply"></i></button>
+                            </p>
+                            <div class="ic-box">
+                                <div class="corr u-arr"><em class="arrline">◆</em><span class="arrclr">◆</span></div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="cmmts">
+                        <h3 class="u-hd">精彩评论</h3>
+                        {% if cmsnum == 0 %}
+                        <h3 style="text-align: center;color:#5a5a5a;margin-top: 40px;">还没有评论，快来评论吧！</h3>
+                        {% endif %}
+                        <p class="hidden" id="uid">{{ request.session.user_id }}</p>
+                        {% for i in cms %}
+                        <div class="itm">
+
+                            <div class="cmmts-head">
+                                <img class="img-circle" src="{% randprofileimg i.user.id %}" />
+                            </div>
+                            <div class="cntwrap">
+                                <div class="f-brk">
+                                    <h3>{{ i.user.nickname }}</h3>
+
+                                    <p>{{ i.comment }}</p>
+                                </div>
+                                <p class="hidden cid">{{ i.id }}</p>
+                                <div class="rp">
+                                    <div class="time">
+                                        {{ i.c_time }}
+                                    </div>
+
+                                    <a class="btn cmtlike">
+                                        <i class="fa {% cmtlikebtn i.id userid %} fa-fw"></i>
+                                    </a>
+                                    <span class="pnum">{{ i.p_num }}</span>
+
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="cmtline"></div>
+            </div>
+
+        <!-- 底部推荐-->
+            <div class="col-md-12" style="margin-top:60px;">
+                <div class="catalogue-title">
+                    <div class="lefttitle">
+                        <img src="data:image/png;base64,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"/>
+                        <span>同类图书推荐</span>
+                    </div>
+                    <div class="panel-body panel-friendlink">
+                        {% for i in rmds %}
+                            <a href="{% url 'libfront:bookdetail' i.id %}">{{ i.name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="hidden" id="myform">
+            <form action="#" method="#" id="borrowform">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="user" class="col-sm-4 control-label">当前用户：</label>
+                    <input disabled="true" value="{{ request.session.nickname }}" name="user">
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-sm-4 control-label">书名：</label>
+                    <input disabled="true" value="{{ book.name }}" name="name">
+                </div>
+                <div class="form-group">
+                    <label for="author" class="col-sm-4 control-label">作者：</label>
+                    <input disabled="true" value="{{ book.author }}" name="author">
+                </div>
+                <div class="form-group">
+                    <label for="pubdate" class="col-sm-4 control-label">出版日期：</label>
+                    <input disabled="true" value="{{ book.pubdate | date:"Y-m-d" }}" name="pubdate">
+                </div>
+                <div class="form-group">
+                    <label for="publisher" class="col-sm-4 control-label">出版社：</label>
+                    <input disabled="true" value="{{ book.publisher }}" name="publisher">
+                </div>
+                <div class="form-group">
+                    <label for="score" class="col-sm-4 control-label">评分：</label>
+                    <input disabled="true" value="{{ book.score }}/10" name="score">
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">当前库存/总库存：</label>
+                    <input disabled="true" value="{{ book.stock_now }} / {{ book.stock_all }}">
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">历史借阅数：</label>
+                    <input disabled="true" value="{{ book.borrow_num }}">
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">还书日期：</label>
+                    <input type="date" name="endtime" id="endtime" value="1900-01-01">
+                    <script>
+                        var date = new Date();
+                        var str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+                        if (date.getMonth()+1 < 10&&date.getDate() < 10) {
+                            str = date.getFullYear() + "-0" + (date.getMonth() + 1) + "-0" + date.getDate();
+                        }
+                        else if (date.getMonth()+1 >= 10&&date.getDate() < 10) {
+                            str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-0" + date.getDate();
+                        }
+                        else if(date.getMonth()+1 < 10&&date.getDate() >= 10){
+                            str = date.getFullYear() + "-0" + (date.getMonth() + 1) + "-" + date.getDate();
+                        }
+                        else{
+                            str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+                        }
+                        console.log("时间："+str);
+                        $("#endtime").attr("value", str);
+                    </script>
+                </div>
+
+                <input class="hidden" name="book_id" value="{{ book.id }}">
+                <input class="hidden" name="user_id" value="{{ request.session.user_id }}">
+        <!--                <div class="form-group">-->
+        <!--                    <label class="col-sm-4 control-label">借阅时长：</label>-->
+        <!--                    <select name="duration">-->
+        <!--                        <option value="1">1 天</option>-->
+        <!--                        <option value="3">3 天</option>-->
+        <!--                        <option value="7">7 天</option>-->
+        <!--                        <option value="15">15天</option>-->
+        <!--                        <option value="30">30天</option>-->
+        <!--                    </select>-->
+        <!--                </div>-->
+
+            </form>
+        </div>
+
+
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+<span style="display:none">
+    <script>
+
+        function submitBorrow() {
+            //console.log("hi");
+            $.ajax({
+                url: "{% url "libfront:borrow" %}",
+                method: "POST",
+                data: $('#borrowform').serialize(),
+                success: function (data) {
+                    console.log(data);//打印服务端返回的数据(调试用)
+                    var code = data["code"];
+                    console.log(code);
+                    if (code === 500) {
+                        alert("尚未登录，请先登录再进行操作。")
+                    } else if (code === 200) {
+                        alert("借阅成功，快去看看吧，记得及时还书喔。");
+                        $(".closebtn").click();
+                    } else if (code === 401) {
+                        alert("书籍库存不足，借阅失败，下次早点来吧。")
+                    } else if (code === 400) {
+                        alert("发生错误，借阅失败！")
+                    }
+                },
+                error: function () {
+                    alert("wuwuwu~发生未知错误，操作失败！");
+                }
+            });
+        }
+    </script>
+    <script>
+		$(document).ready(function (e) {
+            $("#borrowbook").click(function () {
+                var html = $("#myform").html();
+                {#$("#myform").html("nothing");#}
+                {#console.log(html);#}
+                var button = "<p align='right'>" +
+                    "<input class='btn btn-primary' type='button' value='重置' />&nbsp&nbsp" +
+                    "<input class='btn btn-primary' type='button' value='确定' onclick='submitBorrow()'/>&nbsp&nbsp" +
+                    "<input class='btn btn-primary closebtn' type='button' value='取消' />" +
+                    "</p>";
+
+                var win = new Window({
+                    width: 500, //宽度
+                    height: 600, //高度
+                    title: '{{ book.name }}-借阅', //标题
+                    content: html, //内容
+                    isMask: true, //是否遮罩
+                    buttons: button, //按钮
+                    isDrag: true, //是否移动
+                });
+            })
+        });
+	</script>
+</span>
+
+{% include "footerbar.html" %}
+</body>
+</html>

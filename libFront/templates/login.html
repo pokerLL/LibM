@@ -1,0 +1,235 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>登录-书苑</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'css/site.css' %}" rel="stylesheet">
+    <script src="{% static 'js/jquery191.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/book.js' %}" type="text/javascript"></script>
+    <!-- Bootstrap core CSS -->
+
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+        .container1{
+            min-height: 100vh;
+            text-decoration: none;
+            justify-content: center;
+            background: url({% static 'picture/login/01.jpeg' %}) center center / cover no-repeat;
+            z-index: -1;
+        }
+        .container-n{
+
+    background-color: #337ab75e;
+    width: 400px;
+    height: 600px;
+    border-radius: 15px;
+    overflow: hidden;
+    position: absolute;
+	box-shadow: 1px 3px 6px #383838;
+	border:none;
+	margin-left:100px;
+}
+.container-n::after{
+    content: "";
+    position: absolute;
+    inset: 0px -70px;
+    background: url({% static 'picture/login/02.jpg' %}) no-repeat;
+    background-size: 550px;
+    background-position: right;
+    opacity: 0.8;
+    margin:0px;
+    padding:0px;
+}
+.register-box{
+    color:#fff;
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    /* border: 1px solid red; */
+    transition: 0.3s ease;
+	text-align: center;
+}
+/* 登录区域 */
+.login-box{
+    /* 临时隐藏 */
+    /* display: none; */
+    position: absolute;
+    inset: 0;
+    top: 20%;
+    /* left: 50%; */
+    z-index: 2;
+    border-color: #fff;
+    transition: 0.3s ease;
+}
+.login-box::before{
+    content: "";
+    background-color: #fff;
+    width: 200%;
+    height: 550px;
+    border-radius: 50%;
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+/* 注册、登录区域收起 */
+.login-box.slide-up{
+    top: 95%;
+}
+input,textarea{
+    border-radius: 10px;
+    border: blue;
+    padding: 0 5px;
+    line-height:25px;
+}
+.cap img{
+    width:90px;
+}
+input{
+    color:black;
+}
+.cap input{
+    width:100px;
+    color:black;
+}
+.form-group{
+    margin-top:25px;
+}
+.form-group label{
+    font-size:18px;
+}
+    </style>
+
+</head>
+<body class="text-center">
+
+{% if request.session.has_login %}
+    <script>window.location.replace("{% url "libfront:index" %}")</script>
+{% endif %}
+<div class="container1">
+    {% if msg %}
+        <div class="alert alert-warning" style="text-align: center;margin: 0px 200px 30px 200px;">{{msg}}</div>
+    {% endif %}
+    {% if not msg %}
+        <div style="height: 50px"></div>
+    {% endif %}
+     {% if rgf.captcha.errors %}
+        <div class="alert alert-warning">{{ rgf.captcha.errors }}</div>
+    {% endif %}
+    <img src="{% static 'picture/index/02.png' %}" style="width: 200px;position: absolute;left: 0px;top: 40px;z-index: 0;"/>
+    <div class="container">
+
+        <div class="row mt20 mb20">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default container-n">
+                    <div class="register-box">
+                        <h2 style="margin:30px">登录</h2>
+
+                        <div class=panel-heading">
+                            <a class="btn btn-default btn-primary logbtn" utp="n" style="padding:8px 12px;"><i class="fa fa-user fa-fw"></i>用户登录</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a class="btn btn-default logbtn" utp="r" style="padding:8px 12px;"><i class="fa fa-user-plus fa-fw"></i>管理员登录</a>
+
+                        </div>
+                        <div class="panel-body">
+                            <form class="form-horizontal" method="post"
+                                  action="{% url "libfront:login" %}">
+                                {% csrf_token %}
+                                <input type="hidden" value="n" id="user_login_type" name="user_login_type">
+                                <div class="form-group mt10">
+                                    <label class="col-sm-3 control-label">账号</label>
+                                    <div class="col-sm-9">
+                                        {{ lgf.account }}
+                                        {#                                    <input type="text" name="account" class="form-control" placeholder="请输入账号">#}
+                                    </div>
+                                </div>
+                                <div class="form-group mt20">
+                                    <label class="col-sm-3 control-label">密码</label>
+                                    <div class="col-sm-9">
+                                        {{ lgf.password }}
+                                        {#                                    <input type="password" name="password" class="form-control" placeholder="请输入密码">#}
+                                    </div>
+                                </div>
+
+                                <div class="form-group mt20">
+                                    <label class="col-sm-3 control-label">验证码</label>
+                                    <div class="col-sm-9 cap" align="left" style="left:40px;">
+                                        {{ lgf.captcha }}
+                                    </div>
+                                </div>
+                                {#  <div class="form-group">#}
+                                {#  {{ lgf.captcha.label_tag }}#}
+                                {#      {{ lgf.captcha }}#}
+                                {#      </div>#}
+
+                                <div class="form-group">
+                                    <div class="col-sm-offset-1 col-sm-10">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> 记住登录状态
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-offset-1 col-sm-10">
+                                        <button type="submit" class="btn btn-primary" style="padding:8px 60px">登 录</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="panel-body login-box slide-up">
+                        <a href="{% url 'libfront:register' %}" class="pull-right" style="position: absolute; top: 0px; left: 42%;text-decoration:none;">新用户注册 &nbsp;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div style="height: 150px"></div>
+</div>
+<div>
+    <script src="{% static "js/attach.js" %}"></script>
+    <script>
+        //点击刷新验证码
+        $(function () {
+            $('.captcha').css({
+                'cursor': 'pointer'
+            });
+            // ajax刷新
+            $('.captcha').click(function () {
+                console.log('click');
+                $.get("{% url 'captcha-refresh' %}",
+                    function (result) {
+                        $('.captcha').attr('src', result['image_url']);
+                        $('#id_captcha_0').val(result['key'])
+                    });
+            });
+        })
+    </script>
+</div>
+</body>
+</html>

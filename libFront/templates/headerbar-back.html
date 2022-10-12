@@ -1,0 +1,106 @@
+{% load static %}
+
+
+<div class="navbar navbar-inverse">
+    <div class="container">
+
+        <div class="navbar-header">
+            <a href="{% url "libfront:index" %}" class="navbar-brand logo" title="书苑">
+                书苑
+            </a>
+        </div>
+        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation" id="nav-header">
+
+            <ul class="nav navbar-nav">
+                <li><a href="{% url "libfront:category" 64 1 %}">学习资源</a></li>
+                <li><a href="{% url "libfront:category" 65 1 %}">名著</a></li>
+                <li><a href="{% url "libfront:category" 66 1 %}">小说</a></li>
+                <li><a href="{% url "libfront:category" 67 1 %}">历史</a></li>
+                <li><a href="{% url "libfront:category" 68 1 %}">报刊杂志</a></li>
+                <li><a href="{% url "libfront:category" 69 1 %}">科技</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">语言<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{% url "libfront:category" 70 1 %}">日语</a></li>
+                        <li><a href="{% url "libfront:category" 71 1 %}">英语</a></li>
+                        <li><a href="{% url "libfront:category" 72 1 %}">韩语</a></li>
+                        <li><a href="{% url "libfront:categorys" %}">全部分类</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a class="dropdown-toggle"
+                                        data-toggle="dropdown">排行榜<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{% url "libfront:ranklist" "score" 1 %}">评分榜</a></li>
+                        <li><a href="{% url "libfront:ranklist" "comment_num" 1 %}">评论榜</a></li>
+                        <li><a href="{% url "libfront:ranklist" "c_time" 1 %}">最新入库</a></li>
+                    </ul>
+                </li>
+                <li><a href="/admin">Admin</a></li>
+                <li><a href="/lm">BACKNED</a></li>
+                <li><a href="#" onclick="hideall()">欣赏壁纸</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if request.session.has_login %}
+                    {# 已登陆则显示头像下拉框 #}
+                    <li class="dropdown"><a class="dropdown-toggle" href="javascript:;" data-toggle="dropdown"><i
+                            class="fa fa-user fa-fw"></i>{{ request.session.nickname }}<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{% url "libfront:userdetail"  request.session.user_id %}" title="个人资料">
+                                <i class="fa fa-info fa-fw"></i>个人资料</a>
+                            </li>
+                            <li>
+                                <a href="{% url "libfront:userdetail"  request.session.user_id %}" title="站内消息">
+                                    <i class="fa fa-envelope fa-fw"></i>站内消息</a>
+                            </li>
+                            <li><a href="{% url "libfront:logout" %}" title="退出登录">
+                                <i class="fa fa-power-off fa-fw"></i>退出登录</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    {#未登陆则显示注册登陆按钮#}
+                    <li><a id="loginbtn" href="{% url "libfront:login" %}">登陆</a></li>
+                    <li><a id="registerbtn" href="{% url "libfront:register" %}">注册</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+<div class="clear"></div>
+{% if request.session.change_password_required %}
+
+    <div class="alert alert-warning text-center">
+        管理员通知：请及时更改密码，更改密码前无法使用本账号。</br>
+        <p id="idontknow">
+            <span id="time">3</span>
+            秒后自动
+            <a href="{% url "libfront:userdetail" request.session.user_id %}">跳转</a>
+            ,若无反应请手动点击。
+        </p>
+    </div>
+
+    <script type="text/javascript">
+        var count = 3;
+        url = window.location.pathname;
+        burl = "/user/" + {{ request.session.user_id }};
+        console.log(url === burl);
+
+        //一开始就执行
+        if (url !== burl) {
+            window.setInterval("refresh()", 1000);
+        } else {
+            document.getElementById("idontknow").style.display = "None";
+        }
+
+        function refresh() {
+            if (count > 1) {
+                //修改span中的数字
+                count -= 1;
+                document.getElementById("time").innerText = count;
+            } else {
+                location.href = "{% url "libfront:userdetail" request.session.user_id %}";
+            }
+        }
+    </script>
+{% endif %}
+

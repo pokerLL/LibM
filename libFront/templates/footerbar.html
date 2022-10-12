@@ -1,0 +1,142 @@
+{% load static %}
+
+<div id="right-bottom-menu" style="position: fixed;bottom: 60px;right: 20px;width: 50px;">
+    <a id="hide-all" class="btn" style="background-color: #ffffff;padding: 0 6px;"><i class="fa fa-camera-retro fa-2x"></i></a>
+    <div style="height: 15px"></div>
+    <a id="to-top" class="btn" style="background-color: #ffffff;display: None;padding: 0 6px;"><i class="fa fa-arrow-up fa-2x"></i></a>
+</div>
+<script>
+    $(function () {
+        $(window).scroll(function () {
+            if ($(this).scrollTop() >= 50) {
+                $("#to-top").fadeIn();
+            } else {
+                $("#to-top").fadeOut();
+            }
+        });
+        $("#to-top").click(function () {
+            $("body,html").animate({scrollTop: 0}, 800);
+        });
+        $("#hide-all").click(function () {
+            $(".could-hide ").toggle();
+        });
+    })
+</script>
+
+<div class="could-hide panel-body" style="width: 100%;background-color: #511B04;display: none" id="footer">
+    <font color="white">
+        <span class="pull-left">
+           书香浸润心灵，阅读伴我成长。（如有需要请联系超级管理员）
+        </span>
+        <span class="pull-right">
+            超级管理员联系方式：0037825247113
+        </span>
+    </font>
+</div>
+
+<div class="hidden">
+    <script src="{% static "js/attach.js" %}"></script>
+    <script type="text/javascript">
+        $(window).bind("load", function () {
+            var footerHeight = 0,
+                footerTop = 0,
+                $footer = $("#footer");
+            positionFooter();
+
+            function positionFooter() {
+                if ($(".navbar").is(":hidden")) {
+                    console.log($(".navbar").is(":hidden"));
+                    return;
+                }
+
+                footerHeight = $footer.height();
+                footerTop = ($(window).scrollTop() + $(window).height() - footerHeight) + "px";
+
+                if (($(document.body).height() + footerHeight) < $(window).height()) {
+                    console.log("页面内容高度小于屏幕高度");
+                    $footer.css({
+                        position: "absolute",
+                        bottom: "0px",
+                        display: ""
+                    });
+                } else {
+                    console.log("页面内容高度大于屏幕高度");
+                    $footer.css({
+                        position: "static",
+                        display: ""
+                    });
+                }
+            }
+
+            $(window).scroll(positionFooter).resize(positionFooter);
+        });
+    </script>
+</div>
+
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script>
+<!--小帅哥： https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json-->
+<!--萌娘：https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json-->
+<!--小可爱（女）：https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json-->
+<!--小可爱（男）：https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json-->
+<!--初音：https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json-->
+<!-- 上边的不同链接显示的是不同的小人，这个可以根据需要来选择 下边的初始化部分，可以修改宽高来修改小人的大小，或者是鼠标移动到小人上的透明度，也可以修改小人在页面出现的位置。 -->
+<script>
+    L2Dwidget.init({
+        "model": {
+            jsonPath:
+                "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+            "scale": 1
+        }, "display": {
+            "position": "left", "width": 110, "height": 150,
+            "hOffset": 0, "vOffset": -20
+        }, "mobile": {"show": true, "scale": 0.5},
+        "react": {"opacityDefault": 0.8, "opacityOnHover": 0.5}
+    });
+</script>
+
+<script type="text/javascript">
+    /* 鼠标点击特效 */
+
+    jQuery(function () {
+        var a_idx = 0;
+        $("html").click(function (e) {
+            {#var a_idx = Math.floor((Math.random() * 26));#}
+            var a = ["❤欢迎", "❤来到", "❤贺院", "❤云书苑", "❤书香沁润心灵", "❤阅读伴我成长","❤锦鲤附身", "❤欧气爆棚", "❤过过过！", "❤君君超帅", "❤耶耶耶"];
+            var color1 = Math.floor((Math.random() * 255));
+            var color2 = Math.floor((Math.random() * 255));
+            var color3 = Math.floor((Math.random() * 255));
+
+            var $i = $("<span />").text(a[a_idx]);
+            {#a_idx = (a_idx + 1) % a.length;#}
+            var x = e.pageX,
+                y = e.pageY;
+            $i.css({
+                "z-index": 9999999999999,
+                "top": y - 20,
+                "left": x,
+                "position": "absolute",
+                "font-family": "mmm",
+                "fontSize": Math.floor(25),
+                "font-weight": "bold",
+                "color": "rgb(" + color1 + "," + color2 + "," + color3 + ")",
+                "-webkit-user-select": "none",
+                "-moz-user-select": "none",
+                "-ms-user-select": "none",
+                "user-select": "none",
+            });
+            $("body").append($i);
+            $i.animate({
+                    "top": y - 200,
+                    "opacity": 0
+                },
+                1000,
+                function () {
+                    $i.remove();
+                });
+            a_idx += 1;
+            if (a_idx === a.length) {
+                a_idx = 0;
+            }
+        });
+    });
+</script>

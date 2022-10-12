@@ -1,0 +1,31 @@
+{% extends "libEnd/template.html" %}
+{% load mytemplate %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            {% for cat,bknum in catgs %}
+                {% judgeline forloop.counter 4 0 %}
+
+                <div class="col-md-3">
+                    <div class="info-box">
+                    <span class="info-box-icon {% randcatgbg %}">
+                        <i class="far fa-bookmark"></i>
+                    </span>
+                        <a href="{% url "lm:bookcategory" cat.id %}">
+                            <div class="info-box-content">
+                                <span class="info-box-text">{{ cat.name }}</span>
+                                <span class="info-box-number">书籍数量：{{ bknum }}</span>
+                            </div>
+                        </a>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+
+                {% if forloop.last or forloop.counter|judgeline_filter:4 %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+    </div>
+    </div>
+{% endblock %}

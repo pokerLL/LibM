@@ -1,0 +1,46 @@
+{% load static %}
+{% load mytemplate %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>所有分类-书苑</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'css/site.css' %}" rel="stylesheet">
+    <link href="{% static 'css/card.css' %}">
+    <script src="{% static 'js/jquery191.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/tools.js' %}"></script>
+</head>
+<body>
+{% include "headerbar.html" %}
+<style type="text/css">
+    .container .items {
+        border: 5px solid #EEEEEE;
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+</style>
+<div class="container body-content container-fluid">
+    <div class="big-class">
+        <div class="class-box">
+            {% for cat in catgs %}
+                <div class="col-md-3 ">
+                    <div class="items text-center {% randcatgbg %} ">
+                        <h3>
+                            <a href="{% url "libfront:category" cat.id 1 %}"><strong>{{ cat.name }}</strong></a>
+                        </h3>
+                        <p style="height: 70px">{{ cat.description }}</p>
+                        <p align="right"><a href="{% url "libfront:category" cat.id 1 %}">查看相关书籍</a></p>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% include "footerbar.html" %}
+</body>
+</html>

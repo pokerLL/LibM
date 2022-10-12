@@ -1,0 +1,193 @@
+{% extends "libEnd/template.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">用户信息</h3>
+                    <div class="float-right">
+                        <a class="btn bg-primary" href="#">
+                            <i class="fas fa-edit"></i>
+                        </a>&nbsp;&nbsp;编 辑&nbsp;&nbsp;
+                        <a class="btn btn-danger">
+                            X
+                        </a>&nbsp;&nbsp;删 除&nbsp;&nbsp;
+                        <a class="btn btn-danger">
+                            <i class="fas fa-notes-medical"></i>
+                        </a>&nbsp;&nbsp;通知更改密码
+                        {% if request.session.user_type == 0 %}
+                            <a class="btn btn-primary">
+                                <i class="fas fa-user-plus"></i>
+                            </a>&nbsp;更改用户权限
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="dataTables_wrapper dt-bootstrap4">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6">
+                                <div class="dataTables_length"><label>Show
+                                    <select name="one_page_item_num"
+                                            class="custom-select custom-select-sm form-control form-control-sm">
+                                        <option value="10"
+                                                {% if one_page_item_num == 10 %}selected="selected"{% endif %}>10
+                                        </option>
+                                        <option value="25"
+                                                {% if one_page_item_num == 25 %}selected="selected"{% endif %}>25
+                                        </option>
+                                        <option value="50"
+                                                {% if one_page_item_num == 50 %}selected="selected"{% endif %}>50
+                                        </option>
+                                        <option value="100"
+                                                {% if one_page_item_num == 100 %}selected="selected"{% endif %}>100
+                                        </option>
+                                    </select> entries</label></div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <div class="dataTables_filter">
+                                    <label>Search:</label>
+                                    <input type="search" class="form-control">&nbsp;&nbsp;
+                                    <button class="btn btn-default ush lmrsbtn">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example1"
+                                       class="table table-bordered table-striped dataTable dtr-inline"
+                                       role="grid" aria-describedby="example1_info">
+                                    <thead>
+                                    <tr role="row">
+                                        <th rowspan="1" colspan="1"> 账号</th>
+                                        <th rowspan="1" colspan="1"> 昵称</th>
+                                        <th rowspan="1" colspan="1"> 性别</th>
+                                        <th rowspan="1" colspan="1"> 邮箱</th>
+                                        <th rowspan="1" colspan="1"> 账号类型</th>
+                                        <th rowspan="1" colspan="1"> 注册时间</th>
+                                        <th rowspan="1" colspan="1"> 上次登录时间</th>
+                                        <th rowspan="1" colspan="1"> 操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    {% for user in users %}
+
+                                        <tr class="{% if forloop.counter == 0 or forloop.counter == 2 or forloop.counter == 4 or forloop.counter == 6 or forloop.counter == 8 %}odd{% else %}even{% endif %}">
+                                            <td style="display: None">{{ user.id }}</td>
+                                            <td>
+                                                <a href="{% url "lm:userdetail" user.id %}">{{ user.account }}</a>
+                                            </td>
+                                            <td>{{ user.nickname }}</td>
+                                            <td>{{ user.gender }}</td>
+                                            <td>{{ user.email }}</td>
+                                            <td>
+                                                {% if request.session.user_type == 0 %}
+                                                    <select class="form-control usertype">
+                                                        {% if request.session.user_type == 0 %}
+                                                            <option value="0"
+                                                                    {% if user.type == 0 %}selected="selected"{% endif %}>
+                                                                超级管理员
+                                                            </option>
+                                                        {% endif %}
+                                                        {% if request.session.user_type <= 1 %}
+                                                            <option value="1"
+                                                                    {% if user.type == 1 %}selected="selected"{% endif %}>
+                                                                管理员
+                                                            </option>
+                                                        {% endif %}
+                                                        <option value="2"
+                                                                {% if user.type == 2 %}selected="selected"{% endif %}>
+                                                            普通用户
+                                                        </option>
+                                                        <option value="3"
+                                                                {% if user.type == 3 %}selected="selected"{% endif %}>
+                                                            逾期用户
+                                                        </option>
+                                                    </select>
+                                                {% else %}
+                                                    {% if user.type == 0 %}超级管理员{% endif %}
+                                                    {% if user.type == 1 %}管理员{% endif %}
+                                                    {% if user.type == 2 %}普通用户{% endif %}
+                                                    {% if user.type == 3 %}逾期用户{% endif %}
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ user.c_time }}</td>
+                                            <td>{{ user.l_time }}</td>
+                                            <td>
+                                                <a class="btn bg-primary" href="{% url "lm:userdetail" user.id %}">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a class="btn btn-danger ude">
+                                                    X
+                                                </a>
+
+                                                <a class="btn {% if user.change_password_required == True %} btn-info{% else %} btn-danger{% endif %} upcrd">
+                                                    <i class="fas fa-notes-medical"></i>
+                                                </a>
+                                                {% if request.session.user_type == 0 %}
+                                                    <a class="btn btn-primary utce">
+                                                        <i class="fas fa-user-plus"></i>
+                                                    </a>
+                                                {% endif %}
+
+                                            </td>
+                                        </tr>
+
+                                    {% endfor %}
+
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th rowspan="1" colspan="1"> 账号</th>
+                                        <th rowspan="1" colspan="1"> 昵称</th>
+                                        <th rowspan="1" colspan="1"> 性别</th>
+                                        <th rowspan="1" colspan="1"> 邮箱</th>
+                                        <th rowspan="1" colspan="1"> 账号类型</th>
+                                        <th rowspan="1" colspan="1"> 注册时间</th>
+                                        <th rowspan="1" colspan="1"> 上次登录时间</th>
+                                        <th rowspan="1" colspan="1"> 操作</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                        {% include "libEnd/table_page.html" %}
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+    <script>
+        generatePageNum({{ page }}, {{ page_num }});
+        $(".page-link").click(function () {
+            var url = window.location.pathname;
+            var one_page_item_num = $("[name=one_page_item_num]").val();
+            var pg = $(this).text();
+            var token = $.cookie("csrftoken");
+            console.log(one_page_item_num);
+            console.log(pg);
+            data = {
+                'object': 'user',
+                'one_page_item_num': one_page_item_num,
+                'page': pg,
+                "X-CSRFToken": token,
+            };
+            postToNewTabWithJSONByjQuery(url, data);
+            window.opener = null;
+            window.open('', '_self');
+            window.close();
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,337 @@
+{% load  static %}
+{% load  mytemplate %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>书苑</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'css/site.css' %}" rel="stylesheet">
+    <script src="{% static 'js/jquery191.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+<!--    <script src="{% static 'js/tools.js' %}"></script>-->
+
+<style>
+
+</style>
+<body>
+
+{% include 'headerbar.html' %}
+
+{% if request.session.has_login %}
+    {% if msg.msgnum == 1 and not request.session.change_password_require %}
+        <div id="msg" class="alert alert-warning text-center">
+            {% for it in msg.msg %}{{ it.title }}：{{ it.content }}{% endfor %}
+            (本弹窗五秒后自动消失，请前往用户-站内消息继续查看。)
+        </div>
+        <script>
+            setTimeout("$('#msg').hide()", 5000);
+        </script>
+    {% elif msg.msgnum > 1 %}
+        <div id="msg" class="alert alert-warning text-center">你当前有{{ msg.msgnum }}条通知待查看。(本消息五秒后自动消失，请前往用户-站内消息继续查看。)
+        </div>
+        <script>
+            setTimeout("$('#msg').hide()", 5000);
+        </script>
+    {% endif %}
+{% endif %}
+
+<div class="could-hide container body-content">
+    <div class="row">
+        <div class="big-class">
+			<div class="class-box">
+                <div id="myCarousel" class="carousel slide" >
+                    <!-- 轮播（Carousel）指标 -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>
+                    <!-- 轮播（Carousel）项目 -->
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <a href="{% url 'libfront:bookdetail' recommends.1.id %}"><img src="{% static 'picture/comment/02.png'%}" style="height:300px;width: 1100px;" alt="First slide"></a>
+                        </div>
+                        <div class="item">
+                            <a href="{% url 'libfront:category' 86 1 %}"><img src="{% static 'picture/comment/05.png'%}" style="height:300px;width: 1100px;" alt="Second slide"></a>
+                        </div>
+                        <div class="item">
+                            <a href="{% url 'libfront:bookdetail' recommends.2.id %}"><img src="{% static 'picture/comment/04.png'%}" style="height:300px;width: 1100px;" alt="Third slide"></a>
+                        </div>
+                    </div>
+                    <!-- 轮播（Carousel）导航 -->
+                    <a class="carousel-control left" href="#myCarousel"
+                       data-slide="prev">&lsaquo;</a>
+                    <a class="carousel-control right" href="#myCarousel"
+                       data-slide="next">&rsaquo;</a>
+                    <script>
+                        $('#myCarousel').carousel('cycle')
+                    </script>
+                </div>
+                <div class="index-show">
+                    <div class="col-md-8">
+
+                        <div class="panel panel-default hidden-xs">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <h5 class="pull-left col-xs-4"><i class="fa fa-diamond fa-fw"></i>本苑推荐</h5>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+
+                                {% for i in recommends %}
+                                <div class="col-md-3 col-xs-6 mb10 mt10">
+                                    <a class="thumbnail" href="{% url 'libfront:bookdetail' i.id %}">
+                                        <img src="{% randbookimg i.id %}" style="height:210px;">
+                                    </a>
+                                    <div class="caption"><strong>{{ i.name }}</strong><br>
+                                        <span class="text-muted fs-12">
+                                                <a href="{% url 'libfront:search' i.author 1 %}">{{ i.author }}</a> / 著
+                                            </span><br>
+
+                                        <span class="text-warning fs-12">评分：{{ i.score }}/10</span>
+
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="col-md-4 panel panel-default">
+
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a href="#tab-ns" role="tab" data-toggle="tab">最新入库</a>
+                                </li>
+                                <li role="presentation"><a href="#tab-sh" role="tab" data-toggle="tab">评分最高</a></li>
+                                <li role="presentation"><a href="#tab-cms" role="tab" data-toggle="tab">书评最多</a></li>
+                            </ul>
+                            <div class="tab-content mt10">
+                                <div role="tabpanel" class="tab-pane active" id="tab-ns">
+                                    <ul class="list-group list-top">
+
+                                        {% for i in newest %}
+                                        <li class="list-group-item">
+                                            <i class="topNum">{{ forloop.counter }}</i>
+                                            <a href="{% url 'libfront:bookdetail' i.id %}">{{ i.name }}</a>
+                                            <small class="text-muted">/
+                                                <a href="{% url 'libfront:search' i.author 1 %}">{{ i.author }}</a>
+                                            </small>
+                                            <span class="pull-right text-muted">{{ i.c_time }}</span>
+                                        </li>
+                                        {% endfor %}
+
+                                    </ul>
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane" id="tab-sh">
+                                    <ul class="list-group list-top">
+
+                                        {% for i in scorehighest %}
+                                        <li class="list-group-item">
+                                            <i class="topNum">{{ forloop.counter }}</i>
+                                            <a href="{% url 'libfront:bookdetail' i.id %}">{{ i.name }}</a>
+                                            <small class="text-muted">/
+                                                <a href="{% url 'libfront:search' i.author 1 %}">{{ i.author }}</a>
+                                            </small>
+                                            <span class="pull-right text-muted">{{ i.score }}</span>
+                                        </li>
+                                        {% endfor %}
+
+                                    </ul>
+                                </div>
+
+                                <div role="tabpanel" class="tab-pane" id="tab-cms">
+                                    <ul class="list-group list-top">
+
+                                        {% for i in commentest %}
+                                        <li class="list-group-item">
+                                            <i class="topNum">{{ forloop.counter }}</i>
+                                            <a href="{% url 'libfront:bookdetail' i.id %}">{{ i.name }}</a>
+                                            <small class="text-muted">/
+                                                <a href="{% url 'libfront:search' i.author 1 %}">{{ i.author }}</a>
+                                            </small>
+                                            <span class="pull-right text-muted">{{ i.comment_num }}</span>
+                                        </li>
+                                        {% endfor %}
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        {# #}
+                        <div class="bookshow">
+						<div class="catalogue-title">
+							<div class="class-recommend">
+                                <div class="recommend-tit">
+                                    <div class="lefttitle">
+                                        <img src="data:image/png;base64,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"/>
+                                        <span>分类推荐</span>
+                                    </div>
+
+                                    <ul role="tablist" class="catalogue-bar">
+                                        <li class="active" role="presentation"><a href="#xbtj" role="tab" data-toggle="tab">考研推荐</a></li>
+                                        <li role="presentation"><a href="#nstj" role="tab" data-toggle="tab">四六级推荐</a></li>
+                                        <li role="presentation"><a href="#nsza" role="tab" data-toggle="tab">历史推荐</a></li>
+                                        <li role="presentation"><a href="#lstj" role="tab" data-toggle="tab">科技读物推荐</a></li>
+
+                                    </ul>
+                                </div>
+                                <div class="tab-content mt10">
+                                    <div role="tabpanel" class="tab-pane active" id="xbtj">
+                                        <div class="indexbook-list">
+
+                                            <div class="indexbook-item-box">
+                                                {% for book in list1 %}
+                                                <a class="indexbook-item" href="{% url 'libfront:bookdetail' book.id %}">
+                                                    <img class="cover" src="{% randbookimg book.id %}"/>
+                                                    <p class="name"><strong>{{ book.name }}</strong></p>
+                                                    <p class="author">{{ book.author }} / 著</p>
+                                                    <span class="text-warning fs-12">评分/借阅数：{{ book.score }}/10({{ book.borrow_num }})</span>
+
+                                                </a>
+                                                {% if forloop.counter == 6 %}
+                                                {% endif %}
+                                                  {% endfor %}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="nstj">
+                                        <div class="indexbook-list">
+
+                                            <div class="indexbook-item-box">
+                                                {% for book in list2 %}
+                                                <a class="indexbook-item" href="{% url "libfront:bookdetail" book.id %}">
+                                                    <img class="cover" src="{% randbookimg book.id %}"/>
+                                                    <p class="name"><strong>{{ book.name }}</strong></p>
+                                                    <p class="author">{{ book.author }} / 著</p>
+                                                    <span class="text-warning fs-12">评分/借阅数：{{ book.score }}/10({{ book.borrow_num }})</span>
+
+                                                </a>
+                                                {% if forloop.counter == 6 %}
+                                                {% endif %}
+                                                {% endfor %}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="nsza">
+                                       <div class="indexbook-list">
+
+                                            <div class="indexbook-item-box">
+                                                {% for book in list3 %}
+                                                <a class="indexbook-item" href="{% url "libfront:bookdetail" book.id %}">
+                                                    <img class="cover" src="{% randbookimg book.id %}"/>
+                                                    <p class="name"><strong>{{ book.name }}</strong></p>
+                                                    <p class="author">{{ book.author }} / 著</p>
+                                                    <span class="text-warning fs-12">评分/借阅数：{{ book.score }}/10({{ book.borrow_num }})</span>
+
+                                                </a>
+                                                {% if forloop.counter == 6 %}
+                                                {% endif %}
+                                                {% endfor %}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="lstj">
+
+                                        <div class="indexbook-list">
+
+                                            <div class="indexbook-item-box">
+                                                {% for book in list4 %}
+                                                <a class="indexbook-item" href="{% url "libfront:bookdetail" book.id %}">
+                                                    <img class="cover" src="{% randbookimg book.id %}"/>
+                                                    <p class="name"><strong>{{ book.name }}</strong></p>
+                                                    <p class="author">{{ book.author }} / 著</p>
+                                                    <span class="text-warning fs-12">评分/借阅数：{{ book.score }}/10({{ book.borrow_num }})</span>
+
+                                                </a>
+                                                {% if forloop.counter == 6 %}
+                                                {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+							    </div>
+							<div class="new-recommend">
+								<div class="lefttitle">
+									<img src="data:image/png;base64,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"/>
+									<span>本月新书速递</span>
+								</div>
+
+								<div class="indexbook-list">
+                                    {% for i in newest2 %}
+                                    <div class="indexbook-item">
+
+                                        <a href="{% url 'libfront:bookdetail' i.id %}" class="book-set">
+                                            <img class="cover" src="{% randbookimg i.id %}"/>
+                                        </a>
+                                        <p class="name">{{ i.name }}</p>
+                                        <a class="author" href="{% url 'libfront:search' i.author 1 %}">{{ i.author }}</a>
+                                        <span class="text-warning fs-12">评分/借阅数：{{ i.score }}/10({{ i.borrow_num }})</span>
+                                        <i class="online-data-icon">
+                                            <span class="text">上新</span>
+                                        </i>
+                                    </div>
+                                    {% endfor %}
+								</div>
+							</div>
+							<div class="hot-comments">
+								<div class="lefttitle">
+									<img src="data:image/png;base64,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"/>
+									<span>全站热评榜</span>
+								</div>
+								<div class="index-hot">
+                                    <p class="hidden" id="uid">{{ request.session.user_id }}</p>
+                                    {% for i in cms %}
+									<div class="indexbook-item">
+										<div class="headimg">
+											<img class="img-circle imgsize" src="{% randprofileimg i.user.id %}"/>
+										    <h3 class="name">{{ i.user.nickname }}</h3>
+                                            <p class="data">{{ i.c_time }}</p>
+                                        </div>
+										<div class="text">
+											{{ i.comment }}
+										</div>
+                                        <a class="bookname" href="{% url 'libfront:bookdetail' i.book.id %}">{{ i.book }}</a>
+                                        <p class="num{{forloop.counter}}">NO {{forloop.counter}}</p>
+                                        <p class="hidden cid">{{ i.id }}</p>
+                                        <p align="center" class="update">
+
+                                            <a class="btn cmtlike">
+                                                <i class="fa {% cmtlikebtn i.id userid %} fa-fw"></i>
+                                            </a>
+                                            <span class="pnum">{{ i.p_num }}</span>
+									    </p>
+                                    </div>
+                                    {% endfor %}
+								</div>
+							</div>
+						</div>
+					</div>
+
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+{% include "footerbar.html" %}
+</body>
+</html>

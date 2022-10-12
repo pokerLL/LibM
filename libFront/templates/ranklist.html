@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>排行榜-书苑</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/site.css' %}" rel="stylesheet">
+    <script src="{% static 'js/jquery191.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/dialog.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/book.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/pagenormal.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/tools.js' %}"></script>
+</head>
+<style>
+    .one{
+		width: 32px;
+		height: 34px;
+		background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAiCAYAAADRcLDBAAAAAXNSR0IArs4c6QAABHlJREFUWAm1V1+IVFUY/313FnXLwDS23dE1giDXMSHCoJcQooeiQBZ2FMGEHtZF0aLVh0wiiurBXaiHYit6qCDcXSghCEKE6EVQwihHEwLNbWe3JRdDbXdld06/79577ty/M7Puzgcz58z37/ebc75z7nfFDHQdg8E7qCXifCiHS6/WckmzmYHCBzCVV9Jsgc7BMdEfZnDzYVTM8cCQNhEZQn9pv4iYNHNYZ4wRDBY+hjF9YX1i7sgR6b844KhBJxA5BOGaZIkmHCx8bsxbbky2G+30q0nAxXEOuriKH07G5esFKkOkEtGHfRjyNR4qvCTF0YWonis60pPDn6UvOdsdtwW/lYA4+6S/9JnVJcBIZC+J8J8gZ52CcfUaYP2jwMZCGW0bJ6nvoN86Ur7O+QSmrrXjWimP8cvArRtBWDARLJDAyyRAolVJkFCTOV7Yxe+v+GlxXTdsArY8DaztqEbWm01PABd+Av763feUea7iHjlSOhEPTSWhTmZgSzfuf3AY255vwbr18bjGf18fB859P49//y7Kaxe+TQvMJjExvBcLlU9ZsCsigXP/AP+VgVmOCzPcuTnAWQnkWoFVDwD35IGVHMNizB3knF7p2PlFWG3nqSRMefhdVvdR6+SOM1PAjd+AOyl7HXHkjxWsnTWPAa1tUYvIe5Lf+UZUGTsdajTlE/tYbENVR57a6V+Bm39UVY3O7nuEdbSV3qH/KuiT/K5PwilCVhKYGN3OG+4UV8ErSLLB1BlghkV2t9LKYm57itE+lLBAxXlWOnp+tCmDi8eYkRwJfFQlQBddgaUQUBSN1zxW9A8Sx8XzdQEJTKKXBDZbX2gN1NqCeZ64X84DJ7+B4aemaB7NZ0VxFM8Xl4R711cqr1ulO2oRpsnt28Blnv3T3LWrV3TDGpN4PuK5uIz2VmJydBvnnUE2PYYZp8Cc+gHm0kVgbhZy7+ogpO5E82neqnTCw/VJwHRXbZzpPZAh0tIC2UC+258BdFyMJPJ6uN4pqEBXoip6EWXJcy/wYvJLaZy34WIkntfHtYUZvZf1JswSSyDLXkufzOvieiQEvGtDoldxMySe18e1KxGF1GdBMyQjr0/CRDdXH0bNkEReD9cjYSR6HPRp2AyJ5/VxPRIOzkUw9XHcDInn9XH97ZDovav9gD6Ol1M0X7zPgIfrkWjv0ZUYi2BqP7Ccksw3Bg/XuzHddwnHeT+CqQ2J9gO1pKsLsqPb/dRyc/PEGxzi2XcYfzuYoh3ayvGhEBJtSLQfWIpovNvYhJIojuL5EpAQKWo7foBE+Iy2wkZEG5J6K2Ld46PGhRsatXtNzQEXz/ePdFaqS7Z3vudy9Jiaql5758ORSEqja413023b2EYbXetvtOWvGG14V1ndEsZZONK3qJbfgpnyyBPcIH27ftLqFj2KnOUe7Jd88ees2ERNpDlye3aQyJu0PZ5mz9CdZxG+zfeMkxn2QN0QCettJkce5ha9yMaSbZXpJIi+EK9lsU2TJNtqGeP8NJf+O2kvXrFx9cb/AR0lfcNoJz+eAAAAAElFTkSuQmCC) 100% no-repeat;
+		color: rgba(0,0,0,0);
+		margin-top: 5px;
+		background-size: 20px;
+		position: relative;
+        left: -10px;
+	}
+	.two{
+		width: 32px;
+		height: 34px;
+		background: url(data:image/png;base64,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) 100% no-repeat;
+		color: rgba(0,0,0,0);
+		margin-top: 5px;
+		background-size: 20px;
+		position: relative;
+        left: -10px;
+	}
+	.three{
+		width: 32px;
+		height: 34px;
+		background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAiCAYAAADRcLDBAAAAAXNSR0IArs4c6QAABpBJREFUWAm1WH1sU1UUP+9t7brNso927T7Y2HADB2NCcIABEbawEaKRYCBKIohBQIjKH8LYJAY1jg38QxKFiRoFoxFI/CTEFploAkw+DQ4nbDhgbF3bjW7AYOvKe55z2/t8r3sdg+hNlnvv+fy9e88953RC8TrjRhnkt2GIIYiwra5mYO0QIrqs4nLDe7IEr+oyQ0RBEDYKtC4uj3lNlqStQwtD7aEa/2pUkoeSI54sy0JJuXG7LMOqoWQFUVxXV9P/LgNBggjkZQSyDZcKLdwAAvh0Zlzl8k2bNknhPL5HnvjrraqPEcgyTtOZZUEQX6nb0v8+8TQOZ683rAAZasPpaiMCCF9aip5asm/RvjtqOq0X7l0Y1XXiu914vYvDeaq9jNe7Eq/3I07TgCBiyXrDUjzGT/DMo7gQnxMSkiD3wTGQ/1Bhe0bGyA6kpyFoC35KF65dbW1XUxv/OpvefPEC9PT4uJoyo7M7sggv/FwzsFsh4mIQCGLifT4jyfLn6CCa9nl5+TD90cfBbkuj7bCG2+OCI8d+gaamxqC8AAFREJ7DuPoq3IAuCBKavd64INWetqe05InotLSMcL1h712uNnAe2h9we12L6qr93+gpRgTh8FQtlSR5JwajUa3Y5euAdu8l6Lzmhr7+XvAP9IPREAOmmHiwJtshPSUbLEmpahV6LX5RFFaU2Sp3aRihjS6IHz1V7+BVVKoVPF3tcO7Cb9B9g65/6JFotsD4MVPBZknXCgpQNddW+bqWqBMTTm/1SkmS6IWwgV8BDei8+XIDJw17zh1VAAUIBk9T0RFFcVVpyoYPFQIu/uXi5qB38ywMyIPolwUkAaj/3Qkd3la1zj2tU1MyYdrEUgUI4qEAnTMnpeIwNyTyhSzvjbojyR9wAESnE4gEwBAVA9YRaZBjHw/2xCxIjLdxU5qZ9MkOH2Q/6GevkgLYF5OA0/P3CpzGcWGKgUhXkGHJg3lTliGIdDAYTBAIBKDD1wINl47C6aafICANcDNsJjt2a5Y6RsaF/O0gAXYSeOyYCKUKtSYFod5Iwi9eOHMtjIi3QktHAzhP7obGK8cg2ZwKswqfhkm5xXjHmltmZgbZQ3/ML3LZSTi6thTha8jkTukZRnoFMwrmIwALnDjvAAcCkORg9i7Mfgzmz1gD6ZYciDHEQt/ALW6OzWSP7PLni9eSyfwCHGcnIUrSArVGu+eSequsseiANWEkeHytUN94QAFAAo2txzFn9IEhyoR5I07RUS8ov6gH9xt6BVCkZnb63OqtspaxOdhzeCtERxng+u1rCp0W+VlT0bkJbvb5YCBwW8PjG0pw6oGnwfwGQQiQgdehDMqEkcYt/w2FNcqWDzmpBZCanAMjrWPgYvtZaLp6Bm779fXD7WIksnrAX4cmtVEqHs4Ynz0dJuBfjDEWrvd2Qtd1F7h7rkRU1bHL/HIQGkWqBX392sDSCIQ2zpO74Oi571mc0MuYnFcCJmMc7K/fOeiZkgrZ1RssMAWQ29RMKkaRhsWcBubYJMamfNDd64Hm9tPwmfNNjIV+iDclIij9qhtul/tlIEAW2tVOqRrqDXNsMrw4rxoT1XKIjTFrRAKSH9zdVzBf2AHrg4bHN4PshvwGT0KAE1yQZirHeqO3rwfzh5t9qS0hSyMyItYCNny+vpse6Pfrv45wu1hHmF8GQhLFr9UWKaFQOQ4flJiOYX5IesAGc4uWwNxHnodM61iYOHoWLC4uB0O0Cc63nmRAwnXJHk9UnMf9svxK6dPp3XyZshgXoNpx5NQBvtXMxROfhYdHzwRzXDA2iHmtxwUt7nNw8PQX4NfJE9Mnz1PXDqyq0FqaUjGKfkIoSd7hrn5JBmm72tsf5+sjFrGEOAvYk7IhAVO476aXPVFvz1VMN6qEEzJGfcWEsdPUprG6iKvL7Bt2EFEBQaXc4Wk+izSlkv4f/UQIyZ9lttxCQVjECo8SxkSIEoU11HSEBFkjQg0Jfcn9DNJTNzRkg+wH/QQBMFq48fD2jvP/kx4Tjd21veMO9RpdzmPdNlZZKnKDuu0k7LZtg7ttrouXP7xGlytQy48xVothZuK0+50x8PoQwKp7avm5M4d382RsGrYjkCmcdq8zAjgOorC6LKXiVCRd5XVEEiC6o7NmPv5ifwN/xUwaSk7DE4Qz+NP/rTJr+bcaus5mWCC4nqN7aw62T0/Svx/weCmx4Q9iORlDnjocF15fK+aeQ1gufyhLXNfC9e42/wOLEInF5OiABgAAAABJRU5ErkJggg==) 100% no-repeat;
+		color: rgba(0,0,0,0);
+		margin-top: 5px;
+		background-size: 20px;
+		position: relative;
+        left: -10px;
+	}
+
+	.other{
+		display: flex;
+		-webkit-box-pack: center;
+        background-size: 20px;
+		justify-content: center;
+		-webkit-box-align: center;
+        align-items: center;
+        justify-content: space-evenly;
+		position: relative;
+        left: -10px;
+		align-items: center;
+		width: 31px;
+		height: 30px;
+		background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAeCAYAAADU8sWcAAAAAXNSR0IArs4c6QAAAghJREFUSA3FlzFLw0AUx73EwVknqyJdOwgi6tJBENtJEL+AmxbtF+jiINh+AqVu+gVEcGkbBFcVERxcRap10tmhafz/QxIuaaStNK8Hx7t79+793l2Syzs11mep1+tpmG46jrMOOYs6jTqF+oX6ifqulLqBvM7n86+QPYvqZQHoFoCHsFvsZauNPyGQIwRxpem6mn/CAV2C9SnAK12z+lQggHuY7iOIx7gpsXCAd2BcBXgibtIgOgTwA/sCAriIzjOiilqtdgzo+TDA9E0/9Ee/UVZo5Y1GY6/T6VSjRsPqG4ZRyOVyZ76/AG5Z1hrAFqIc9weHLfEI2ghgA+WWvt1tB9C0bfskSTBh9O9xzACO7d5FJ0OFQMl4vDED0XDrSwJQHVEiV+Et5Hd8p48ItVfx/I1tIVgIQy63fTmkFeqQS/iMEC+EIZefWiqkleukuo5XOTYOGZw6H5JAn0UuV97yFcKyxZU/CENdHLkGfiaXo4CTq/DKK5y1b5BzUkFg1U38Wue57Q6gFSmwx6mQ6/7PsWoTqdMzBiT+bC9IqRYAt93vnA3TNA8g20nuAP17HJuc4JBhdoHBYsLwop/FhODsePlVOaEAynr+RkaQw+nAkaXODMLLsbN4DEz6/128+dm4nJ1OY1eu07AL8tclPQC2EUQawr8o8kDiRXES9RuVF8UmVjrQRfEX0JHRg6KO+oIAAAAASUVORK5CYII=) 100% no-repeat;
+		font-size: 12px;
+		color: #fff;
+		letter-spacing: -.22px;
+		margin-top: 5px;
+		background-size: 20px;
+	}
+	.other span{
+	    margin-left:10px;
+	}
+</style>
+
+<body>
+
+
+<!-- 此处是header -->
+{% include 'headerbar.html' %}
+
+<div class="container body-content ">
+    <div class="big-class">
+        <div class="class-box">
+            <ul class="nav nav-tabs mb10 hidden-xs panel panel-default" style="background-color: #f5f5f5">
+                <li id="0"><a href="{% url 'libfront:ranklist' 'score' 1 %}">评分榜</a></li>
+                <li id="1"><a href="{% url 'libfront:ranklist' 'comment_num' 1 %}">评论榜</a></li>
+                <li id="2"><a href="{% url 'libfront:ranklist' 'c_time' 1 %}">最新入库</a></li>
+            </ul>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1 class="fs-16 mg0 lefttitle">
+                        <span>
+                            <img src="data:image/png;base64,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"/>
+                            排行榜
+                        </span>
+                    </h1>
+                </div>
+                <table class="table">
+                    <tr>
+                        <th>排名</th>
+                        <th>书名</th>
+                        <th>作者</th>
+                        <th>出版社</th>
+                        <th>出版日期</th>
+                        <th>书籍分类</th>
+                        <th>总借出次数</th>
+                        <th>总库存</th>
+                        <th>当前库存</th>
+                        <th>书籍评分</th>
+                        <th>书籍评论数</th>
+                    </tr>
+
+                    {% for book in qs %}
+                        <tr>
+                            <td>
+                                {% if forloop.counter == 1 %}
+                                <div class="one">
+                                    {{forloop.counter}}
+                                </div>
+                                {% elif forloop.counter == 2 %}
+                                <div class="two">
+                                    {{forloop.counter}}
+                                </div>
+                                {% elif forloop.counter == 3 %}
+                                <div class="three">
+                                    {{forloop.counter}}
+                                </div>
+                                {% else %}
+                                <div class="other">
+                                    <span>
+                                    {{forloop.counter}}
+                                    </span>
+                                </div>
+                                {% endif %}
+                            </td>
+                            <td><a href="{% url "libfront:bookdetail" book.id %}">{{ book.name }}</a></td>
+                            <td class="text-muted"><a href="#"><a
+                                    href="{% url "libfront:search" book.author 1 %}">{{ book.author }}</a></a></td>
+                            <td><a href="{% url "libfront:search" book.publisher 1 %}">{{ book.publisher }}</a></td>
+                            <td class="hidden-xs">{{ book.pubdate }}</td>
+                            <td class="booktag">
+                                {% for tag in book.categ.all %}
+                                    <a href="{% url "libfront:category" tag.id 1 %}">{{ tag }}</a>
+                                {% endfor %}
+                            </td>
+                            <td>{{ book.borrow_num }}</td>
+                            <td>{{ book.stock_all }}</td>
+                            <td>{{ book.stock_now }}</td>
+                            <td>{{ book.score }}</td>
+                            <td>{{ book.comment_num }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% include 'pgnum.html' %}
+        </div>
+    </div>
+</div>
+<span class="hidden">
+    <script>
+        window.onload = function () {
+            var ur = window.location.pathname;
+            ur = ur.charAt(ur.length - 4);
+            if (ur === "r") {
+                $("#0").addClass("active");
+            } else if (ur === "u") {
+                $("#1").addClass("active");
+                {#$("#1").addClass("active");#}
+            } else {
+                $("#2").addClass("active");
+                {#$("#1").addClass("active");#}
+            }
+        }
+    </script>
+</span>
+{% include "footerbar.html" %}
+</body>
+</html>

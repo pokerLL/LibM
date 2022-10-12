@@ -1,0 +1,44 @@
+{% extends "libEnd/template.html" %}
+
+{% block content %}
+
+    <div class="timeline">
+        <!-- Timeline time label -->
+        <div class="time-label">
+            <span class="bg-green">{% now "Y-m-d" %}</span>
+        </div>
+
+        <!-- Before each timeline item corresponds to one icon on the left scale -->
+
+        <!-- Timeline item -->
+        {% for msg in messages_all %}
+            <div>
+                <p style="display: None">{{ msg.id }}</p>
+                <i class="fas fa-envelope bg-blue"></i>
+                <div class="timeline-item">
+                    <!-- Time -->
+                    <span class="time"><i class="fas fa-clock"></i> {{ msg.c_time }}</span>
+                    <!-- Header. Optional -->
+                    <h3 class="timeline-header"><strong>{{ msg.title }}</strong> | <a href="#">{{ msg.user }}</a> 留言
+                    </h3>
+                    <!-- Body -->
+                    <div class="timeline-body">
+                        {{ msg.message }}
+                    </div>
+                    <!-- Placement of additional controls. Optional -->
+                    <div class="timeline-footer">
+                        <!--<a class="btn btn-primary btn-sm tlbtn">Readed</a>-->
+                        <a class="btn btn-danger btn-sm tlbtn mde">删除</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <!-- The last icon means the story is complete -->
+        <div>
+            <i class="fas fa-clock bg-gray"></i>
+        </div>
+    </div>
+
+{% endblock %}
+

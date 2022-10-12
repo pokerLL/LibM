@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wrong Message</title>
+</head>
+<body>
+{% if msg %}
+    <div id="msg" class="alert alert-warning text-center">
+        <h2>{{ msg }}</h2>
+    </div>
+    <script>
+        setTimeout("window.location.href='/lf/index'", 2000);
+    </script>
+{% endif %}
+</body>
+</html>

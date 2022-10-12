@@ -1,0 +1,218 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>注册-书苑</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'css/site.css' %}" rel="stylesheet">
+    <script src="{% static 'js/jquery191.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/tools.js' %}"></script>
+
+    <!-- Bootstrap core CSS -->
+
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+        .container1{
+            min-height: 100vh;
+            text-decoration: none;
+            justify-content: center;
+            background: url({% static 'picture/login/01.jpeg' %}) center center / cover no-repeat;
+            z-index: -1;
+        }
+        .container-n{
+            background-color: #337ab75e;
+            width: 400px;
+            height: 600px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: absolute;
+            box-shadow: 1px 3px 6px #383838;
+            border:none;
+            margin-left:100px;
+        }
+        .container-n::after{
+            content: "";
+            position: absolute;
+            inset: 0px -70px;
+            background: url({% static 'picture/login/02.jpg' %}) no-repeat;
+            background-size: 550px;
+            background-position: right;
+            opacity: 0.8;
+            margin:0px;
+            padding:0px;
+        }
+        .register-box{
+            color:#3b3b3b;
+            width: 100%;
+            position: absolute;
+            z-index: 1;
+            top: 10%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            /* border: 1px solid red; */
+            transition: 0.3s ease;
+            text-align: center;
+        }
+        /* 登录区域 */
+        .login-box{
+            /* 临时隐藏 */
+            /* display: none; */
+            position: absolute;
+            inset: 0;
+            top: 10%;
+            /* left: 50%; */
+            z-index: 2;
+            border-color: #fff;
+            transition: 0.3s ease;
+        }
+        .login-box::before{
+            content: "";
+            background-color: #fff;
+            width: 200%;
+            height: 600px;
+            border-radius: 50%;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            z-index:-1;
+            transform: translateX(-50%);
+        }
+        /* 注册、登录区域收起 */
+        .login-box.slide-up{
+            top: 95%;
+        }
+        input,textarea{
+            border-radius: 10px;
+           border: #d9edf7 2px solid;
+            padding: 0 5px;
+            line-height:25px;
+        }
+
+
+    </style>
+
+</head>
+<body class="text-center">
+<div>
+    <script src="{% static "js/attach.js" %}"></script>
+</div>
+
+<div class="container1">
+    {% if rgf.captcha.errors %}
+        <div class="alert alert-warning">{{ rgf.captcha.errors }}</div>
+    {% elif msg %}
+        <div class="alert alert-warning">{{ msg }}</div>
+    {% endif %}
+    {% if not msg %}
+        <div style="height: 50px"></div>
+    {% endif %}
+    <img src="{% static 'picture/index/02.png' %}" style="width: 200px;position: absolute;left: 0px;top: 40px;z-index: 0;"/>
+    <div class="container body-content">
+        <div class="row mt20 mb20">
+            <div class="col-md-5 col-md-offset-3">
+                <div class="panel panel-default container-n">
+                    <div class="register-box">
+                        <a href="{% url 'libfront:login' %}" class="pull-right" style="text-decoration:none;top: -50px;position: absolute;right: 35%;">已有用户？立即登录</a>
+                    </div>
+
+                    <div class="panel-body login-box">
+                        <h2 style="top: -10px;margin: 10px 150px;display: block;position: absolute;">注册</h2>
+·
+                        <form class="form-horizontal" method="post" action="{% url 'libfront:register' %}" style="margin-top: 40px;"
+                              onsubmit="return checkRegisterForm(this)">
+                            {% csrf_token %}
+                            <div class="form-group mt10">
+                                <label class="col-md-4 control-label">用户名(必填):</label>
+                                <div class="col-md-8">
+                                    <input type="text" name="nickname" id="nickname" class="form-control"
+                                           placeholder="请输入用户名">
+                                </div>
+                            </div>
+                            <div class="form-group mt10">
+                                <label class="col-md-4 control-label">账号(必填):</label>
+                                <div class="col-md-8">
+                                    <input type="text" name="account" class="form-control" placeholder="请输入账号">
+                                </div>
+                            </div>
+                            <div class="form-group mt20">
+                                <label class="col-md-4 control-label">密码(必填):</label>
+                                <div class="col-md-8">
+                                    <input type="password" name="password" id="password" class="form-control"
+                                           placeholder="请输入密码">
+                                </div>
+                            </div>
+                            <div class="form-group mt20">
+                                <label class="col-md-4 control-label">重复密码(必填):</label>
+                                <div class="col-md-8">
+                                    <input type="password" name="repassword" id="repassword" class="form-control"
+                                           placeholder="请再次输入密码">
+                                </div>
+                            </div>
+                            <div class="form-group mt10">
+                                <label class="col-md-4 control-label">邮箱(必填):</label>
+                                <div class="col-md-8">
+                                    <input type="email" name="email" id="email" class="form-control"
+                                           placeholder="请输入邮箱">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">性别:</label>
+                                <div class="col-md-8">
+                                    <div class="radio">
+                                        <label class="mr10"><input type="radio" name="gender" value="man"> 男</label>
+                                        <label class="mr10"><input type="radio" name="gender" value="woman"> 女</label>
+                                        <label><input type="radio" name="gender" checked="" value="unknown"> 保密</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mt10">
+                                <label class="col-md-4 control-label">生日:</label>
+                                <div class="col-md-8" style="color: #999999;">
+                                    <input type="date" name="birthday" id="birthday" class="form-control" style="width:180px"
+                                           value="1900-01-01">
+                                </div>
+                            </div>
+                            <div class="form-group mt10">
+                                <label class="col-md-4 control-label">个人简介:</label>
+                                <div class="col-md-8">
+                                    <textarea class="form-control" name="description" id="description"
+                                              placeholder="请输入个人简介"
+                                              rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-3 col-md-9" style="right:60px;">
+                                    <button type="submit" class="btn btn-primary" style="padding:8px 40px;">立即注册</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div>
+    <script src="{% static "js/attach.js" %}"></script>
+</div>
+</body>
+</html>

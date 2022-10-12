@@ -1,0 +1,12 @@
+<ul class="pagination panel" id="pagelink">
+    <li class="disabled"><span>{{ pg }}/{{ all_num }}</span></li>
+    <li><a id="first">1</a></li>
+    <li id="pre"><a href="#" class="">&lt;</a></li>
+    <li id="suf"><a href="#">&gt;</a></li>
+    <li><a id="last">{{ all_num }}</a></li>
+</ul>
+
+
+<script>
+    generatepagenum({{ pg }}, {{ all_num }})
+</script>
