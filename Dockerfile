@@ -12,5 +12,5 @@ RUN apk add --update --no-cache curl jq py3-configobj py3-pip py3-setuptools pyt
   && echo 'Asia/Shanghai' >/etc/timezone  \
   && rm -rf /var/cache/apk/*
 COPY . .
-EXPOSE 8000 8000
-CMD ["/bin/sh", "/data/project/start.local.bat"]
+EXPOSE 8000
+CMD ["/bin/sh", "/data/project/start.local.sh"]

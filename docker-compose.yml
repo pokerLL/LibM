@@ -1,0 +1,5 @@
+version: "3.2"
+services:
+  libm-server:
+    image: "porkerll/libm:6.0"
+    container_name: libm
