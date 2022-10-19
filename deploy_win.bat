@@ -5,6 +5,9 @@ set /p message="Please input commit message: "
 set image_name="porkerll/libm:%tag%"
 set commit_messgae="%message%"
 
+echo image_name : %image_name%
+echo commit_messgae : %commit_messgae%
+
 git add .
 git commit -m %commit_messgae%
 git push github master:main
