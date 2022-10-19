@@ -9,15 +9,21 @@ job_test:
 
 job_build_and_push:
   stage: docker_image
-  image: docker
+  image: docker:dind
+#  services:
+#    - name: docker:dind
+#      command:
+#        [
+##          '--insecure-registry=192.168.0.107:5050',
+#        ]
   before_script:
     - echo 'before_script'
-    - echo
-    - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_TOKEN" $DOCKERHUB_REGISTRY
+    - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN $DOCKERHUB_REGISTRY
   script:
     - echo 'docker_image'
-    - docker build --tag "$DOCKERHUB_REGISTRY:$CI_COMMIT_TAG" .
-    - dokcer push "$DOCKERHUB_REGISTRY:$CI_COMMIT_TAG"
+    - docker build --tag $DOCKERHUB_REGISTRY:$CI_COMMIT_TAG --tag $DOCKERHUB_REGISTRY:latest .
+    - dokcer push $DOCKERHUB_REGISTRY:$CI_COMMIT_TAG
+    - dokcer push $DOCKERHUB_REGISTRY:latest
 
 job_deploy:
   stage: deploy
