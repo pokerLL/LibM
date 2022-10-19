@@ -12,6 +12,7 @@ job_build_and_push:
   image: docker:dind
   variables:
     DOCKER_HOST: tcp://docker:2375/
+    DOCKER_DRIVER: overlay2
   before_script:
     - echo 'before_script'
     - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN $DOCKERHUB_REGISTRY
