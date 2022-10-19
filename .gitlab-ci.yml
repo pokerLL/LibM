@@ -23,6 +23,6 @@ job_deploy:
   stage: deploy
 #  before_script:
 #    - docker login -u "DOCKERHUB_USERNAME" -p "$DOCKERHUB_TOKEN" $DOCKERHUB_REGISTRY
-  script: echo 'deploy'
-#  script:
+  script:
+    - echo 'deploy'
 #    - docker run -itd -p 8000:8000 --name libm porkerll/libm
