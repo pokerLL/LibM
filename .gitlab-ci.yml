@@ -13,7 +13,7 @@ job_build_and_push:
   before_script:
     - echo 'before_script'
     - echo
-    - docker login -u "DOCKERHUB_USERNAME" -p "$DOCKERHUB_TOKEN" $DOCKERHUB_REGISTRY
+    - docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_TOKEN" $DOCKERHUB_REGISTRY
   script:
     - echo 'docker_image'
     - docker build --tag "$DOCKERHUB_REGISTRY:$CI_COMMIT_TAG" .
