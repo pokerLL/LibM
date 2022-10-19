@@ -14,11 +14,11 @@ jobs:
         name: Checkout
         uses: actions/checkout@v3
       -
-        name: Docker meta
+        name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: name/app
+          images: porkerll/libm
       -
         name: Login to DockerHub
         if: github.event_name != 'pull_request'
