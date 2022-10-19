@@ -1,0 +1,32 @@
+variables:
+  DOCKERHUB_USERNAME: "porkerll"
+  DOCKERHUB_TOKEN: "dckr_pat_cpQhxwAEBQjrxo4-n0tkOpEMivM"
+  DOCKERHUB_REGISTRY: "libm"
+
+stages:
+  - test
+  - docker_image
+  - deploy
+
+job_test:
+  stage: test
+  script: echo 'test'
+
+job_build_and_push:
+  stage: docker_image
+  image: docker
+  before_script:
+    - echo 'before_script'
+#    - docker login -u "DOCKERHUB_USERNAME" -p "$DOCKERHUB_TOKEN" $DOCKERHUB_REGISTRY
+  script:
+    - echo 'docker_image'
+#    - docker build --tag "$DOCKERHUB_REGISTRY:$CI_COMMIT_TAG" .
+#    - dokcer push "$DOCKERHUB_REGISTRY:$CI_COMMIT_TAG"
+
+job_deploy:
+  stage: deploy
+#  before_script:
+#    - docker login -u "DOCKERHUB_USERNAME" -p "$DOCKERHUB_TOKEN" $DOCKERHUB_REGISTRY
+  script: echo 'deploy'
+#  script:
+#    - docker run -itd -p 8000:8000 --name libm porkerll/libm
