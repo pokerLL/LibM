@@ -10,12 +10,12 @@ job_test:
 job_build_and_push:
   stage: docker_image
   image: docker:dind
-#  services:
-#    - name: docker:dind
-#      command:
-#        [
-##          '--insecure-registry=192.168.0.107:5050',
-#        ]
+  services:
+    - name: docker:dind
+      command:
+        [
+          '--insecure-registry=https://hub.docker.com/',
+        ]
   before_script:
     - echo 'before_script'
     - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN $DOCKERHUB_REGISTRY
