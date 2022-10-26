@@ -200,30 +200,30 @@ loadheaderbar()
         has_login = true;
     {% endif %}
 
-    var lastTime = new Date().getTime();
-    var currentTime = new Date().getTime();
-    var expiretime = 1000 * 10;//过期时间设置
+<!--    var lastTime = new Date().getTime();-->
+<!--    var currentTime = new Date().getTime();-->
+<!--    var expiretime = 1000 * 10;//过期时间设置-->
 
-    $(function () {
-        /* 鼠标移动事件 更新上次操作时间 */
-        $(document).mouseover(function () {
-            lastTime = new Date().getTime();
-        });
-    });
+<!--    $(function () {-->
+<!--        /* 鼠标移动事件 更新上次操作时间 */-->
+<!--        $(document).mouseover(function () {-->
+<!--            lastTime = new Date().getTime();-->
+<!--        });-->
+<!--    });-->
 
-    function autoLogout() {
-        if (has_login) {
-            currentTime = new Date().getTime();
-            if (currentTime - lastTime > expiretime) {
-                alert("检测到连续%s秒无动作，即将自动退出".replace("%s", expiretime / 1000));
-                has_login = false;
-                window.location.replace("/lf/logout");
-            }
-        }
-    }
+<!--    function autoLogout() {-->
+<!--        if (has_login) {-->
+<!--            currentTime = new Date().getTime();-->
+<!--            if (currentTime - lastTime > expiretime) {-->
+<!--                alert("检测到连续%s秒无动作，即将自动退出".replace("%s", expiretime / 1000));-->
+<!--                has_login = false;-->
+<!--                window.location.replace("/lf/logout");-->
+<!--            }-->
+<!--        }-->
+<!--    }-->
 
-    /* 定时器
-     * 间隔1秒检测是否长时间未操作页面
-     */
-    window.setInterval(autoLogout, 1000);
+<!--    /* 定时器-->
+<!--     * 间隔1秒检测是否长时间未操作页面-->
+<!--     */-->
+<!--    window.setInterval(autoLogout, 1000);-->
 </script>
