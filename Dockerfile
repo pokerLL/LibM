@@ -13,4 +13,4 @@ RUN apk add --update --no-cache curl jq py3-configobj py3-pip py3-setuptools pyt
   && rm -rf /var/cache/apk/*
 COPY . .
 EXPOSE 8000
-CMD ["/bin/sh", "/data/project/start.local.sh"]
+CMD ["/bin/sh", "/data/project/start.local.bat"]
