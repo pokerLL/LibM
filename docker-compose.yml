@@ -1,7 +1,7 @@
 version: "3.2"
 services:
   libm-server:
-    image: "porkerll/libm"
+    image: porkerll/libm
     container_name: libm
     ports:
       - "8000:8000"
