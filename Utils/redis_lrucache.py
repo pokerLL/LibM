@@ -15,7 +15,7 @@ class RedisLRUCacheDict:
 
     def __init__(self):
         # 初始化一个数据库连接池
-        self.conn_pool = redis.ConnectionPool(host='120.24.175.31', port=6379, max_connections=20, decode_responses=True)
+        self.conn_pool = redis.ConnectionPool(host='101.33.197.171', port=6379, max_connections=20, decode_responses=True)
         # 从连接池连接对象并清空当前数据库
         redis.Redis(connection_pool=self.conn_pool).flushdb()
 

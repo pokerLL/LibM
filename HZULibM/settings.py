@@ -94,7 +94,7 @@ DATABASES = {
         'NAME': 'hzulibm',  # 数据库名
         'USER': 'root',  # 账号
         'PASSWORD': '123456',  # 密码
-        'HOST': '120.24.175.31',  # HOST
+        'HOST': '101.33.197.171',  # HOST
         'POST': 3306,  # 端口
     }
 }

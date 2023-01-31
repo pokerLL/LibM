@@ -50,6 +50,7 @@ urlpatterns = [
         {'document_root': settings.STATIC_ROOT}, name='static'),
     url(r'^favicon.ico$', RedirectView.as_view(url=r'static/picture/favicon.ico')),
     path('refresh/', captcha_refresh),
+    path('', include(FRONTURL)),
 
     # path('api/',include(router.urls)),
 ]
